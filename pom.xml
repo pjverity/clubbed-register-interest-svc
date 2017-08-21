@@ -17,7 +17,22 @@
 
 	<name>Clubbed Services</name>
 
-	<description>Clubbed REST Services</description>
+	<url>https://github.com/pjverity/${artifactId}/wiki</url>
+
+	<prerequisites>
+		<maven>3.5.0</maven>
+	</prerequisites>
+
+	<scm>
+		<connection>scm:git:https://github.com/pjverity/clubbed-services.git</connection>
+		<developerConnection>scm:git:https://github.com/pjverity/clubbed-services.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
 
 	<profiles>
 		<profile>
@@ -36,12 +51,6 @@
 			</properties>
 		</profile>
 	</profiles>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-	</properties>
 
 	<dependencyManagement>
 		<dependencies>
@@ -69,28 +78,11 @@
 		</dependency>
 -->
 
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<version>1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-		</dependency>
-
+		<!-- Override the transitively inherited dependency (expressed via clubbed-core) -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
-			<!--
-				The container loads this jar to instantiate a javax.mail.Session instance.
-				If the webapp was to place this jar on its classpath it would be loaded
-				by the webapps classloader and couldn't cast or assign a container instance to
-				webapp instance/declaration. To avoid this we use the classes loaded by the
-				containers classloader. The Session object is obtained via a JNDI lookup.
-			-->
 			<scope>provided</scope>
 		</dependency>
 
@@ -113,24 +105,15 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.restdocs</groupId>
-			<artifactId>spring-restdocs-mockmvc</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
-			<!--
-	Use the Tomcat plugin to deploy the WAR to the server for the world to see!
--->
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<!-- Check /etc/hosts if accessing via VPN -->
 					<url>http://server.local:${tomcat.port}/manager/text</url>
 					<server>TomcatServer</server>
 					<path>/${project.artifactId}</path>

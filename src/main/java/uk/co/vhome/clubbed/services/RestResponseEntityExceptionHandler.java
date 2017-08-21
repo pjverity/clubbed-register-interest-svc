@@ -1,4 +1,4 @@
-package uk.co.vhome.clubbedservices;
+package uk.co.vhome.clubbed.services;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -1,20 +1,20 @@
-package uk.co.vhome.clubbedservices;
+package uk.co.vhome.clubbed.services;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.co.vhome.clubbed.core.services.EMailService;
 
 import javax.inject.Inject;
-import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.validation.Valid;
+import java.util.stream.Stream;
 
 @RestController
 @Validated
@@ -24,7 +24,7 @@ public class RegistrationController
 
 	private static final String FROM_NAME = "Reigate Junior Joggers";
 
-	private final JavaMailSender javaMailSender;
+	private final EMailService eMailService;
 
 	private static final String BODY = "<!DOCTYPE html>\n" +
 			                                   "<html lang=\"en\">" +
@@ -43,13 +43,13 @@ public class RegistrationController
 			                                   "</body>" +
 			                                   "</html>";
 	@Inject
-	public RegistrationController(JavaMailSender javaMailSender)
+	public RegistrationController(EMailService eMailService)
 	{
-		this.javaMailSender = javaMailSender;
+		this.eMailService = eMailService;
 	}
 
-	@CrossOrigin(origins = {"http://localhost:63342"})
-	@RequestMapping("/rjj/register")
+	@CrossOrigin(origins = {"http://localhost:63342", "http://www.reigatejuniorjoggers.co.uk"})
+	@RequestMapping("/register")
 	public String register(@RequestParam(value = "email") @Valid @NotBlank @Email String email)
 	{
 		return sendMail(email) ? "OK" : "ERROR";
@@ -59,31 +59,26 @@ public class RegistrationController
 	{
 		try
 		{
-			javaMailSender.send(mimeMessage ->
-			                    {
-				                    MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-				                    message.setFrom(new InternetAddress(FROM_ADDRESS, FROM_NAME));
+			Stream<InternetAddress> toAddresses = Stream.of(new InternetAddress(email));
 
-				                    try
-				                    {
-					                    message.addTo(email);
+			Stream<InternetAddress> bccAddresses = Stream.of(new InternetAddress("admin@reigatejuniorjoggers.co.uk"),
+			                                                 new InternetAddress("administrator@reigatejuniorjoggers.co.uk"));
 
-					                    message.addBcc("admin@reigatejuniorjoggers.co.uk");
-					                    message.addBcc("administrator@reigatejuniorjoggers.co.uk");
-				                    }
-				                    catch (MessagingException e)
-				                    {
-					                    System.err.println("Failed to add recipient: " + e.getMessage());
-				                    }
-
-				                    message.setSubject("Thanks for registering your interest");
-				                    message.setText(BODY, true);
-			                    });
+			eMailService.send(toAddresses,
+			                  bccAddresses,
+			                  FROM_ADDRESS,
+			                  FROM_NAME,
+			                  "Thanks for registering your interest",
+			                  BODY);
 		}
 		catch (MailException e)
 		{
 			System.err.println("Failed to send mail notification: " + e.getMessage());
 			return false;
+		}
+		catch (AddressException e)
+		{
+			e.printStackTrace();
 		}
 
 		return true;

@@ -1,20 +1,14 @@
-package uk.co.vhome.clubbedservices;
+package uk.co.vhome.clubbed.services;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jndi.support.SimpleJndiBeanFactory;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-
-import javax.mail.Session;
 
 @Configuration
-@ComponentScan
+@ComponentScan(basePackages = "uk.co.vhome.clubbed")
 @EnableAutoConfiguration
 public class ClubbedServices extends SpringBootServletInitializer
 {
@@ -28,18 +22,4 @@ public class ClubbedServices extends SpringBootServletInitializer
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(applicationClass);
 	}
-
-	@Bean
-	public JavaMailSender javaMailSender()
-	{
-		SimpleJndiBeanFactory locator = new SimpleJndiBeanFactory();
-		Session session = ((Session) locator.getBean("mail/Session"));
-
-		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-		javaMailSender.setSession(session);
-		javaMailSender.setDefaultEncoding("UTF-8");
-
-		return javaMailSender;
-	}
-
 }
