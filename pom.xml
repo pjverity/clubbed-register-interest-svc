@@ -3,15 +3,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>uk.co.vhome</groupId>
-	<artifactId>clubbed-services</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	<!--<packaging>jar</packaging>-->
-
-	<name>clubbed-services</name>
-	<description>Clubbed REST Services</description>
-
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -19,13 +10,58 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+	<groupId>uk.co.vhome</groupId>
+	<artifactId>clubbed-services</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>Clubbed Services</name>
+
+	<description>Clubbed REST Services</description>
+
+	<profiles>
+		<profile>
+			<id>demo</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<tomcat.port>9090</tomcat.port>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<tomcat.port>8080</tomcat.port>
+			</properties>
+		</profile>
+	</profiles>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>uk.co.vhome.clubbed</groupId>
+				<artifactId>clubbed-bom</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
+
+		<dependency>
+			<groupId>uk.co.vhome.clubbed</groupId>
+			<artifactId>clubbed-core</artifactId>
+		</dependency>
+
 <!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -38,13 +74,6 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
-
-<!--
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
--->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -83,30 +112,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.restdocs</groupId>
 			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<profiles>
-		<profile>
-			<id>demo</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<tomcat.port>9090</tomcat.port>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<tomcat.port>8080</tomcat.port>
-			</properties>
-		</profile>
-	</profiles>
 
 	<build>
 		<plugins>
@@ -131,6 +143,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 </project>
