@@ -12,20 +12,20 @@
 
 	<groupId>uk.co.vhome</groupId>
 	<artifactId>clubbed-services</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>Clubbed Services</name>
 
-	<url>https://github.com/pjverity/${artifactId}/wiki</url>
+	<url>https://github.com/pjverity/${project.artifactId}/wiki</url>
 
 	<prerequisites>
 		<maven>3.5.0</maven>
 	</prerequisites>
 
 	<scm>
-		<connection>scm:git:https://github.com/pjverity/clubbed-services.git</connection>
-		<developerConnection>scm:git:https://github.com/pjverity/clubbed-services.git</developerConnection>
+		<connection>scm:git:https://github.com/pjverity/${project.artifactId}.git</connection>
+		<developerConnection>scm:git:https://github.com/pjverity/${project.artifactId}.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 
@@ -57,7 +57,7 @@
 			<dependency>
 				<groupId>uk.co.vhome.clubbed</groupId>
 				<artifactId>clubbed-bom</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>1.0.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -68,7 +68,7 @@
 
 		<dependency>
 			<groupId>uk.co.vhome.clubbed</groupId>
-			<artifactId>clubbed-core</artifactId>
+			<artifactId>clubbed-mail</artifactId>
 		</dependency>
 
 <!--
