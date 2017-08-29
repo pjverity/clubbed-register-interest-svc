@@ -78,14 +78,6 @@
 		</dependency>
 -->
 
-		<!-- Override the transitively inherited dependency (expressed via clubbed-core) -->
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- Provides the implementation of the javax.validation spec -->
 		<dependency>
 			<groupId>org.hibernate</groupId>

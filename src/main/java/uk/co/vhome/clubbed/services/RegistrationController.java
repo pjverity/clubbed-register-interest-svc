@@ -2,27 +2,29 @@ package uk.co.vhome.clubbed.services;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.mail.MailException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.co.vhome.clubbed.core.services.EMailService;
+import uk.co.vhome.clubbed.mail.builders.MessageBuilder;
+import uk.co.vhome.clubbed.mail.services.EMailService;
 
 import javax.inject.Inject;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.validation.Valid;
-import java.util.stream.Stream;
 
 @RestController
 @Validated
 public class RegistrationController
 {
-	private static final String FROM_ADDRESS = "no-reply@reigatejuniorjoggers.co.uk";
 
 	private static final String FROM_NAME = "Reigate Junior Joggers";
+
+	private static final String PRIMARY_ADMIN_EMAIL_ADDRESS = "admin@reigatejuniorjoggers.co.uk";
+
+	private static final String SECONDARY_ADMIN_EMAIL_ADDRESS = "administrator@reigatejuniorjoggers.co.uk";
+
+	private static final String SUBJECT = "Thanks for registering your interest";
 
 	private final EMailService eMailService;
 
@@ -42,6 +44,7 @@ public class RegistrationController
 			                                   "<p><strong>Reigate Junior Joggers</strong></p>" +
 			                                   "</body>" +
 			                                   "</html>";
+
 	@Inject
 	public RegistrationController(EMailService eMailService)
 	{
@@ -55,33 +58,26 @@ public class RegistrationController
 		return sendMail(email) ? "OK" : "ERROR";
 	}
 
-	private boolean sendMail(String email)
+	private boolean sendMail(String toAddress)
 	{
+		MessageBuilder messageBuilder = new MessageBuilder();
+
+		messageBuilder.addToAddress(toAddress)
+				.setFromAddress(PRIMARY_ADMIN_EMAIL_ADDRESS, FROM_NAME)
+				.addBccAddress(PRIMARY_ADMIN_EMAIL_ADDRESS)
+				.addBccAddress(SECONDARY_ADMIN_EMAIL_ADDRESS)
+				.setSubject(SUBJECT)
+				.setMessage(BODY);
+
 		try
 		{
-			Stream<InternetAddress> toAddresses = Stream.of(new InternetAddress(email));
-
-			Stream<InternetAddress> bccAddresses = Stream.of(new InternetAddress("admin@reigatejuniorjoggers.co.uk"),
-			                                                 new InternetAddress("administrator@reigatejuniorjoggers.co.uk"));
-
-			eMailService.send(toAddresses,
-			                  bccAddresses,
-			                  FROM_ADDRESS,
-			                  FROM_NAME,
-			                  "Thanks for registering your interest",
-			                  BODY);
+			eMailService.send(messageBuilder);
+			return true;
 		}
-		catch (MailException e)
+		catch (Exception e)
 		{
-			System.err.println("Failed to send mail notification: " + e.getMessage());
 			return false;
 		}
-		catch (AddressException e)
-		{
-			e.printStackTrace();
-		}
-
-		return true;
 	}
 
 }
