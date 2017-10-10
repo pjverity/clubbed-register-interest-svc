@@ -26,10 +26,11 @@ public class RegistrationController
 		this.notificationService = notificationService;
 	}
 
-	@CrossOrigin(origins = {"http://localhost:8080",
+	@CrossOrigin(origins = {"http://localhost:63342",
 	                        "http://www.reigatejuniorjoggers.co.uk",
 	                        "http://www.caterhamladiesjoggers.co.uk",
-	                        "http://www.horshamladiesjoggers.co.uk"})
+	                        "http://www.horshamladiesjoggers.co.uk",
+	                        "http://www.oxtedladiesjoggers.co.uk"})
 	@RequestMapping(path = "/v1/siteIds/{siteId}/registrations/emails/{email}", method = RequestMethod.POST)
 	public String register(@PathVariable(value = "siteId") @Valid @NotBlank String siteId,
 	                       @PathVariable(value = "email") @Valid @NotBlank @Email String recipientEmailAddress)
