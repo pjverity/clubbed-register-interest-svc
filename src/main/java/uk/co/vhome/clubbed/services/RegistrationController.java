@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @RestController
 @Validated
@@ -19,6 +20,8 @@ public class RegistrationController
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	private final NotificationService notificationService;
+
+	private static final String VALID_SITE_IDS_PATTEN = "RJJ|CLJ|HLJ|OLJ";
 
 	@Inject
 	public RegistrationController(NotificationService notificationService)
@@ -32,7 +35,7 @@ public class RegistrationController
 	                        "http://www.horshamladiesjoggers.co.uk",
 	                        "http://www.oxtedladiesjoggers.co.uk"})
 	@RequestMapping(path = "/v1/siteIds/{siteId}/registrations/emails/{email}", method = RequestMethod.POST)
-	public String register(@PathVariable(value = "siteId") @Valid @NotBlank String siteId,
+	public String register(@PathVariable(value = "siteId") @Valid @NotBlank @Pattern(regexp = VALID_SITE_IDS_PATTEN) String siteId,
 	                       @PathVariable(value = "email") @Valid @NotBlank @Email String recipientEmailAddress)
 	{
 
