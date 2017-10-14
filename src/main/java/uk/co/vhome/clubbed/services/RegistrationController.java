@@ -21,7 +21,7 @@ public class RegistrationController
 
 	private final NotificationService notificationService;
 
-	private static final String VALID_SITE_IDS_PATTEN = "RJJ|CLJ|HLJ|OLJ";
+	private static final String VALID_SITE_IDS_PATTEN = "CLJ|HLJ|OLJ|RJJ";
 
 	@Inject
 	public RegistrationController(NotificationService notificationService)
@@ -29,12 +29,18 @@ public class RegistrationController
 		this.notificationService = notificationService;
 	}
 
-	@CrossOrigin(origins = {"http://localhost:63342",
-	                        "http://www.reigatejuniorjoggers.co.uk",
-	                        "http://www.caterhamladiesjoggers.co.uk",
+	@CrossOrigin("*")
+	@GetMapping
+	public String welcome()
+	{
+		return "Interest Registration Service is running";
+	}
+
+	@CrossOrigin(origins = {"http://www.caterhamladiesjoggers.co.uk",
 	                        "http://www.horshamladiesjoggers.co.uk",
-	                        "http://www.oxtedladiesjoggers.co.uk"})
-	@RequestMapping(path = "/v1/siteIds/{siteId}/registrations/emails/{email}", method = RequestMethod.POST)
+	                        "http://www.oxtedladiesjoggers.co.uk",
+	                        "http://www.reigatejuniorjoggers.co.uk"})
+	@PostMapping(path = "/v1/siteIds/{siteId}/registrations/emails/{email}")
 	public String register(@PathVariable(value = "siteId") @Valid @NotBlank @Pattern(regexp = VALID_SITE_IDS_PATTEN) String siteId,
 	                       @PathVariable(value = "email") @Valid @NotBlank @Email String recipientEmailAddress)
 	{

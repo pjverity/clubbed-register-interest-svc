@@ -11,17 +11,13 @@
 	</parent>
 
 	<groupId>uk.co.vhome</groupId>
-	<artifactId>clubbed-regsiter-interest-svc</artifactId>
+	<artifactId>clubbed-register-interest-svc</artifactId>
 	<version>2.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>Clubbed Register Interest Service</name>
 
 	<url>https://github.com/pjverity/${project.artifactId}/wiki</url>
-
-	<prerequisites>
-		<maven>3.5.0</maven>
-	</prerequisites>
 
 	<scm>
 		<connection>scm:git:https://github.com/pjverity/${project.artifactId}.git</connection>
@@ -33,24 +29,6 @@
 		<maven.compiler.source>9</maven.compiler.source>
 		<maven.compiler.target>9</maven.compiler.target>
 	</properties>
-
-	<profiles>
-		<profile>
-			<id>demo</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<tomcat.port>9090</tomcat.port>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<properties>
-				<tomcat.port>8080</tomcat.port>
-			</properties>
-		</profile>
-	</profiles>
 
 	<dependencyManagement>
 		<dependencies>
@@ -94,6 +72,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>logback-classic</artifactId>
+					<groupId>ch.qos.logback</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
