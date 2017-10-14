@@ -47,7 +47,7 @@
 <footer>
 	<div class="container-fluid bg-light text-secondary p-3 mt-3">
 		<div class="row justify-content-center align-items-center">
-			<div class="col-4">
+			<div class="col-12 col-sm-4">
 				<ul class="list-inline mb-0">
 				<#if twitterUrl??>
 					<li class="list-inline-item"><i class="fa fa-twitter"></i> <a href="${twitterUrl}">Twitter</a></li>
@@ -57,7 +57,7 @@
 				</#if>
 				</ul>
 			</div>
-			<div class="col-4 text-right">
+			<div class="col-12 col-sm-4 text-right">
 			  <i class="fa fa-envelope"></i> <a href="mailto:${mailMetaData.fromAddress}">${mailMetaData.fromAddress}</a>
 			</div>
 		</div>
