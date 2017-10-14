@@ -58,13 +58,18 @@ public class MailNotificationMetaDataSupplier implements NotificationMetaDataSup
 	static
 	{
 		CLJ_MAIL_META_DATA.addTemplateParam("logoUrl","http://www.caterhamladiesjoggers.co.uk/images/logo.svg");
-		HLJ_MAIL_META_DATA.addTemplateParam("logoUrl","http://www.horshamladiesjoggers.co.uk/images/logo.svg");
-		OLJ_MAIL_META_DATA.addTemplateParam("logoUrl","http://www.oxtedladiesjoggers.co.uk/images/logo.svg");
-		RJJ_MAIL_META_DATA.addTemplateParam("logoUrl","http://www.reigatejuniorjoggers.co.uk/images/logo.svg");
+		CLJ_MAIL_META_DATA.addTemplateParam("facebookUrl","https://www.facebook.com/caterhamjoggers/");
 
-//		OLJ_MAIL_META_DATA.addTemplateParam("twitterUrl","http://www.oxtedladiesjoggers.co.uk/images/logo.svg");
+		HLJ_MAIL_META_DATA.addTemplateParam("logoUrl","http://www.horshamladiesjoggers.co.uk/images/logo.svg");
+		HLJ_MAIL_META_DATA.addTemplateParam("facebookUrl","https://www.facebook.com/HorshamLadiesJoggers/");
+		HLJ_MAIL_META_DATA.addTemplateParam("twitterUrl","https://twitter.com/@hladiesjoggers");
+
+		OLJ_MAIL_META_DATA.addTemplateParam("logoUrl","http://www.oxtedladiesjoggers.co.uk/images/logo.svg");
 		OLJ_MAIL_META_DATA.addTemplateParam("facebookUrl","https://www.facebook.com/OxtedLadiesJoggers/");
 
+		RJJ_MAIL_META_DATA.addTemplateParam("logoUrl","http://www.reigatejuniorjoggers.co.uk/images/logo.svg");
+		RJJ_MAIL_META_DATA.addTemplateParam("facebookUrl","https://www.facebook.com/ReigateJuniorJoggers/");
+		RJJ_MAIL_META_DATA.addTemplateParam("twitterUrl","https://twitter.com/@juniorjoggers");
 	}
 
 	@Override
