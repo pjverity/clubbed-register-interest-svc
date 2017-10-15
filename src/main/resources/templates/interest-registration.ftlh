@@ -50,10 +50,10 @@
 			<div class="col-12 col-sm-4">
 				<ul class="list-inline mb-0">
 				<#if twitterUrl??>
-					<li class="list-inline-item"><i class="fa fa-twitter"></i> <a href="${twitterUrl}">Twitter</a></li>
+					<li class="list-inline-item"><img src="http://server.v-home.co.uk/twitter-black-shape.svg" height="15 px"/> <a href="${twitterUrl}">Twitter</a></li>
 				</#if>
 				<#if facebookUrl??>
-					<li class="list-inline-item"><i class="fa fa-facebook"></i> <a href="${facebookUrl}">Facebook</a></li>
+					<li class="list-inline-item"><img src="http://server.v-home.co.uk/facebook-logo.svg" height="15 px"/> <a href="${facebookUrl}">Facebook</a></li>
 				</#if>
 				</ul>
 			</div>
