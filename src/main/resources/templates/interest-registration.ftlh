@@ -6,8 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<script src="https://use.fontawesome.com/71d7206d11.js"></script>
-
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
 	      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
@@ -58,7 +56,7 @@
 				</ul>
 			</div>
 			<div class="col-12 col-sm-4 text-right">
-			  <i class="fa fa-envelope"></i> <a href="mailto:${mailMetaData.fromAddress}">${mailMetaData.fromAddress}</a>
+			  <a href="mailto:${mailMetaData.fromAddress}">${mailMetaData.fromAddress}</a>
 			</div>
 		</div>
 	</div>
