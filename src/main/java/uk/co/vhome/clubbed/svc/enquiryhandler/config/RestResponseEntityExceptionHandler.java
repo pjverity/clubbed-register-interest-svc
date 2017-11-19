@@ -1,4 +1,4 @@
-package uk.co.vhome.clubbed.services;
+package uk.co.vhome.clubbed.svc.enquiryhandler.config;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
