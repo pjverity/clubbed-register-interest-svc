@@ -36,8 +36,7 @@ public class EnquiryController
 		return "OK";
 	}
 
-	@CrossOrigin(origins = {"localhost",
-	                        "http://www.caterhamladiesjoggers.co.uk",
+	@CrossOrigin(origins = {"http://www.caterhamladiesjoggers.co.uk",
 	                        "http://www.horshamladiesjoggers.co.uk",
 	                        "http://www.oxtedladiesjoggers.co.uk",
 	                        "http://www.reigatejuniorjoggers.co.uk"})

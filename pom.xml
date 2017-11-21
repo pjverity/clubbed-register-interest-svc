@@ -45,10 +45,14 @@
 	</dependencyManagement>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>uk.co.vhome.clubbed</groupId>
 			<artifactId>clubbed-amqp</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>uk.co.vhome.clubbed</groupId>
+			<artifactId>clubbed-db</artifactId>
 		</dependency>
 
 		<dependency>
