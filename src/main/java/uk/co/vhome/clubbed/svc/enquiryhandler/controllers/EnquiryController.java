@@ -6,6 +6,7 @@ import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,18 +37,20 @@ public class EnquiryController
 		this.commandBus = commandBus;
 	}
 
-	@CrossOrigin(origins = {"http://www.caterhamladiesjoggers.co.uk",
+	@CrossOrigin(origins = {"http://localhost:63342",
+	                        "http://www.caterhamladiesjoggers.co.uk",
 	                        "http://www.horshamladiesjoggers.co.uk",
 	                        "http://www.oxtedladiesjoggers.co.uk",
 	                        "http://www.reigatejuniorjoggers.co.uk"})
 	@PostMapping(path = "/club-enquiry/emails/{email}")
-	public DeferredResult<ResponseEntity<Object>> register(@PathVariable @Valid @NotBlank @Email String email,
+	public DeferredResult<ResponseEntity<Object>> register(@RequestHeader(HttpHeaders.ORIGIN) String origin,
+	                                                       @PathVariable @Valid @NotBlank @Email String email,
 	                                                       @Valid UserDetail userInfo)
 	{
 
 		DeferredResult<ResponseEntity<Object>> handlerResult = new DeferredResult<>();
 
-		String domain = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getHost();
+		String domain = ServletUriComponentsBuilder.fromUriString(origin).build().getHost();
 
 		commandBus.dispatch(asCommandMessage(new NewClubEnquiryCommand(domain, email, userInfo.getFirstName(), userInfo.getLastName())),
 		                    new CommandCallback<>()
@@ -62,7 +65,8 @@ public class EnquiryController
 			                    @Override
 			                    public void onFailure(CommandMessage<?> commandMessage, Throwable cause)
 			                    {
-				                    ConstraintViolationException violationException = (ConstraintViolationException) cause.getCause();
+				                    ConstraintViolationException violationException = cause.getCause() instanceof ConstraintViolationException ? (ConstraintViolationException) cause.getCause() : null;
+
 				                    if (violationException != null)
 				                    {
 					                    if ("enquiries_email_address_pkey".equals(violationException.getConstraintName()))
@@ -76,6 +80,7 @@ public class EnquiryController
 				                    {
 					                    handlerResult.setErrorResult(ResponseEntity.badRequest().body(cause.getMessage()));
 				                    }
+
 				                    LOGGER.error("Failed to register enquiry", cause);
 			                    }
 		                    });
