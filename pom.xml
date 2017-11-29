@@ -9,7 +9,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>uk.co.vhome</groupId>
+	<groupId>uk.co.vhome.clubbed</groupId>
 	<artifactId>clubbed-svc-enquiry-handler</artifactId>
 	<version>3.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
