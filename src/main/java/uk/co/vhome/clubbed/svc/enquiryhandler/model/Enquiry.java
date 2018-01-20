@@ -23,9 +23,6 @@ public class Enquiry
 	@AggregateIdentifier
 	private String emailAddress;
 
-	@Column(nullable = false)
-	private String domain;
-
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
 
@@ -42,8 +39,7 @@ public class Enquiry
 	@CommandHandler
 	Enquiry(NewClubEnquiryCommand newClubEnquiryCommand)
 	{
-		apply(new ClubEnquiryCreatedEvent(newClubEnquiryCommand.getDomain(),
-		                                  newClubEnquiryCommand.getEmailAddress(),
+		apply(new ClubEnquiryCreatedEvent(newClubEnquiryCommand.getEmailAddress(),
 		                                  newClubEnquiryCommand.getFirstName(),
 		                                  newClubEnquiryCommand.getLastName()));
 	}
@@ -51,7 +47,6 @@ public class Enquiry
 	@EventHandler
 	void on(ClubEnquiryCreatedEvent clubEnquiryCreatedEvent, @Timestamp Instant instant)
 	{
-		domain = clubEnquiryCreatedEvent.getDomain();
 		emailAddress = clubEnquiryCreatedEvent.getEmailAddress();
 		firstName = clubEnquiryCreatedEvent.getFirstName();
 		lastName = clubEnquiryCreatedEvent.getLastName();
@@ -66,16 +61,6 @@ public class Enquiry
 	public void setEmailAddress(String emailAddress)
 	{
 		this.emailAddress = emailAddress;
-	}
-
-	public String getDomain()
-	{
-		return domain;
-	}
-
-	public void setDomain(String domain)
-	{
-		this.domain = domain;
 	}
 
 	public String getFirstName()

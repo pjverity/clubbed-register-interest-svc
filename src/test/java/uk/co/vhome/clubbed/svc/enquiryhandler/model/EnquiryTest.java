@@ -21,10 +21,10 @@ class EnquiryTest
 	void createsNew()
 	{
 		testFixture.givenNoPriorActivity()
-				.when(new NewClubEnquiryCommand("localhost", "a.runner@home.com", "Amy", "Runner"))
+				.when(new NewClubEnquiryCommand("a.runner@home.com", "Amy", "Runner"))
 				.expectEventsMatching(
 						exactSequenceOf(
-								messageWithPayload(equalTo(new ClubEnquiryCreatedEvent("localhost", "a.runner@home.com", "Amy", "Runner"))),
+								messageWithPayload(equalTo(new ClubEnquiryCreatedEvent("a.runner@home.com", "Amy", "Runner"))),
 								andNoMore()
 						)
 				)

@@ -9,12 +9,11 @@ import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
 import org.axonframework.eventsourcing.eventstore.inmemory.InMemoryEventStorageEngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.Enquiry;
 
 @SpringBootApplication(scanBasePackages = "uk.co.vhome.clubbed")
-public class ClubbedSvcEnquiryHandlerApplication extends SpringBootServletInitializer
+public class ClubbedSvcEnquiryHandlerApplication
 {
 	private static final Class<ClubbedSvcEnquiryHandlerApplication> APPLICATION_CLASS = ClubbedSvcEnquiryHandlerApplication.class;
 

@@ -6,12 +6,10 @@ import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
 import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.NewClubEnquiryCommand;
 
 import javax.inject.Inject;
@@ -42,16 +40,13 @@ public class EnquiryController
 	                        "http://www.oxtedladiesjoggers.co.uk",
 	                        "http://www.reigatejuniorjoggers.co.uk"})
 	@PostMapping(path = "/club-enquiry/emails/{email}")
-	public DeferredResult<ResponseEntity<Object>> register(@RequestHeader(HttpHeaders.ORIGIN) String origin,
-	                                                       @PathVariable @Valid @NotBlank @Email String email,
+	public DeferredResult<ResponseEntity<Object>> register(@PathVariable @Valid @NotBlank @Email String email,
 	                                                       @Valid UserDetail userInfo)
 	{
 
 		DeferredResult<ResponseEntity<Object>> handlerResult = new DeferredResult<>();
 
-		String domain = ServletUriComponentsBuilder.fromUriString(origin).build().getHost();
-
-		commandBus.dispatch(asCommandMessage(new NewClubEnquiryCommand(domain, email, userInfo.getFirstName(), userInfo.getLastName())),
+		commandBus.dispatch(asCommandMessage(new NewClubEnquiryCommand(email, userInfo.getFirstName(), userInfo.getLastName())),
 		                    new CommandCallback<>()
 		                    {
 			                    @Override

@@ -37,7 +37,7 @@ class ClubbedSvcEnquiryHandlerApplicationTests
 	{
 		mockMvc.perform(post("/v1/enquiries/club-enquiry/emails/amy.user@home.co.uk?firstName=Amy&lastName=User"));
 
-		NewClubEnquiryCommand newClubEnquiryCommand = new NewClubEnquiryCommand("localhost", "amy.user@home.co.uk", "Amy", "User");
+		NewClubEnquiryCommand newClubEnquiryCommand = new NewClubEnquiryCommand("amy.user@home.co.uk", "Amy", "User");
 
 		verify(mockCommandBus).dispatch(argThat(cmdMsg -> cmdMsg.getPayload().equals(newClubEnquiryCommand)));
 	}
