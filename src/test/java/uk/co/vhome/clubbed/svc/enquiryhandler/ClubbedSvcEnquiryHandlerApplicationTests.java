@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.co.vhome.clubbed.svc.enquiryhandler.config.WebConfiguration;
-import uk.co.vhome.clubbed.svc.enquiryhandler.model.NewClubEnquiryCommand;
+import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
 
 import javax.inject.Inject;
 

@@ -5,12 +5,12 @@ import org.apache.commons.logging.LogFactory;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import uk.co.vhome.clubbed.svc.enquiryhandler.model.NewClubEnquiryCommand;
+import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
+import uk.co.vhome.clubbed.svc.enquiryhandler.repositories.NonAxonEntityRepository;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -29,16 +29,16 @@ public class EnquiryController
 
 	private final CommandBus commandBus;
 
+	private final NonAxonEntityRepository enquiryRepository;
+
 	@Inject
-	public EnquiryController(CommandBus commandBus)
+	public EnquiryController(CommandBus commandBus, NonAxonEntityRepository enquiryRepository)
 	{
 		this.commandBus = commandBus;
+		this.enquiryRepository = enquiryRepository;
 	}
 
-	@CrossOrigin(origins = {"http://www.caterhamladiesjoggers.co.uk",
-	                        "http://www.horshamladiesjoggers.co.uk",
-	                        "http://www.oxtedladiesjoggers.co.uk",
-	                        "http://www.reigatejuniorjoggers.co.uk"})
+	@CrossOrigin(origins = {"http://www.${application.domain}"})
 	@PostMapping(path = "/club-enquiry/emails/{email}")
 	public DeferredResult<ResponseEntity<Object>> register(@PathVariable @Valid @NotBlank @Email String email,
 	                                                       @Valid UserDetail userInfo)
@@ -46,40 +46,39 @@ public class EnquiryController
 
 		DeferredResult<ResponseEntity<Object>> handlerResult = new DeferredResult<>();
 
-		commandBus.dispatch(asCommandMessage(new NewClubEnquiryCommand(email, userInfo.getFirstName(), userInfo.getLastName())),
-		                    new CommandCallback<>()
-		                    {
-			                    @Override
-			                    public void onSuccess(CommandMessage<?> commandMessage, Object result)
-			                    {
-				                    LOGGER.info("Registered enquiry for: " + email);
-				                    handlerResult.setResult(ResponseEntity.ok().build());
-			                    }
+		if (enquiryRepository.existsById(email))
+		{
+			ApiError apiError = new ApiError("email", "Address already registered");
+			ResponseEntity<Object> body = ResponseEntity.badRequest().body(Collections.singleton(apiError));
+			handlerResult.setResult(body);
+			return handlerResult;
+		}
 
-			                    @Override
-			                    public void onFailure(CommandMessage<?> commandMessage, Throwable cause)
-			                    {
-				                    ConstraintViolationException violationException = cause.getCause() instanceof ConstraintViolationException ? (ConstraintViolationException) cause.getCause() : null;
+		NewClubEnquiryCommand newClubEnquiryCommand = new NewClubEnquiryCommand(email, userInfo.getFirstName(), userInfo.getLastName());
 
-				                    if (violationException != null)
-				                    {
-					                    if ("enquiries_email_address_pkey".equals(violationException.getConstraintName()))
-					                    {
-						                    ApiError apiError = new ApiError("email", "Address already registered");
-						                    ResponseEntity<Object> body = ResponseEntity.badRequest().body(Collections.singleton(apiError));
-						                    handlerResult.setErrorResult(body);
-					                    }
-				                    }
-				                    else
-				                    {
-					                    handlerResult.setErrorResult(ResponseEntity.badRequest().body(cause.getMessage()));
-				                    }
-
-				                    LOGGER.error("Failed to register enquiry", cause);
-			                    }
-		                    });
+		commandBus.dispatch(asCommandMessage(newClubEnquiryCommand), newEnquiryCommandCallback(email, handlerResult));
 
 		return handlerResult;
+	}
+
+	private CommandCallback<Object, Object> newEnquiryCommandCallback(String email, DeferredResult<ResponseEntity<Object>> handlerResult)
+	{
+		return new CommandCallback<>()
+		{
+			@Override
+			public void onSuccess(CommandMessage<?> commandMessage, Object result)
+			{
+				LOGGER.info("Registered enquiry for: " + email);
+				handlerResult.setResult(ResponseEntity.ok().build());
+			}
+
+			@Override
+			public void onFailure(CommandMessage<?> commandMessage, Throwable cause)
+			{
+				LOGGER.error("Failed to register enquiry", cause);
+				handlerResult.setErrorResult(ResponseEntity.badRequest().body(cause.getMessage()));
+			}
+		};
 	}
 
 }

@@ -1,4 +1,4 @@
-package uk.co.vhome.clubbed.svc.enquiryhandler.model;
+package uk.co.vhome.clubbed.svc.enquiryhandler.model.commands;
 
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -18,17 +18,17 @@ public class NewClubEnquiryCommand
 		this.lastName = lastName;
 	}
 
-	String getEmailAddress()
+	public String getEmailAddress()
 	{
 		return emailAddress;
 	}
 
-	String getFirstName()
+	public String getFirstName()
 	{
 		return firstName;
 	}
 
-	String getLastName()
+	public String getLastName()
 	{
 		return lastName;
 	}

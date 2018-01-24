@@ -1,11 +1,11 @@
 package uk.co.vhome.clubbed.svc.enquiryhandler.model;
 
 import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.commandhandling.model.AggregateIdentifier;
-import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.Timestamp;
+import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
 import uk.co.vhome.clubbed.apiobjects.ClubEnquiryCreatedEvent;
+import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +20,6 @@ public class Enquiry
 {
 	@Id
 	@Column(name = "email_address")
-	@AggregateIdentifier
 	private String emailAddress;
 
 	@Column(name = "first_name", nullable = false)
@@ -44,13 +43,13 @@ public class Enquiry
 		                                  newClubEnquiryCommand.getLastName()));
 	}
 
-	@EventHandler
-	void on(ClubEnquiryCreatedEvent clubEnquiryCreatedEvent, @Timestamp Instant instant)
+	@EventSourcingHandler
+	private void on(ClubEnquiryCreatedEvent clubEnquiryCreatedEvent, @Timestamp Instant enquiryTime)
 	{
-		emailAddress = clubEnquiryCreatedEvent.getEmailAddress();
-		firstName = clubEnquiryCreatedEvent.getFirstName();
-		lastName = clubEnquiryCreatedEvent.getLastName();
-		enquiryTime = instant;
+		setEmailAddress(clubEnquiryCreatedEvent.getEmailAddress());
+		setFirstName(clubEnquiryCreatedEvent.getFirstName());
+		setLastName(clubEnquiryCreatedEvent.getLastName());
+		setEnquiryTime(enquiryTime);
 	}
 
 	public String getEmailAddress()
