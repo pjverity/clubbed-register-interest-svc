@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.0.M7</version>
+		<version>2.0.0.RC1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -28,7 +28,7 @@
 		<maven.compiler.source>9</maven.compiler.source>
 		<maven.compiler.target>9</maven.compiler.target>
 
-		<junit-jupiter.version>5.0.1</junit-jupiter.version>
+		<junit-jupiter.version>5.0.3</junit-jupiter.version>
 		<axon.version>3.0.7</axon.version>
 	</properties>
 
@@ -53,6 +53,13 @@
 
 	<dependencies>
 
+		<!-- See: https://github.com/spring-cloud/spring-cloud-commons/issues/318 -->
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>2.7.4</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
@@ -66,6 +73,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<!-- See: https://github.com/spring-cloud/spring-cloud-commons/issues/318 -->
+			<exclusions>
+				<exclusion>
+					<groupId>com.zaxxer</groupId>
+					<artifactId>HikariCP</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -76,6 +90,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-properties-migrator</artifactId>
 		</dependency>
 
 		<dependency>
@@ -102,14 +121,14 @@
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>2.0.0.Final</version>
+			<version>2.0.1.Final</version>
 		</dependency>
 
 		<!-- Provides the implementation of the javax.validation spec -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>6.0.2.Final</version>
+			<version>6.0.7.Final</version>
 		</dependency>
 
 		<dependency>
@@ -158,7 +177,7 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.8.0</version>
+			<version>3.9.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -179,7 +198,7 @@
 						<id>default</id>
 						<goals>
 							<goal>build</goal>
-							<goal>push</goal>
+							<!--<goal>push</goal>-->
 						</goals>
 					</execution>
 				</executions>
