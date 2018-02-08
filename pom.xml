@@ -207,7 +207,8 @@
 					<repository>pjverity/${project.artifactId}</repository>
 					<tag>${project.version}</tag>
 					<buildArgs>
-						<BUILT_ARTIFACT>target/${project.build.finalName}.jar</BUILT_ARTIFACT>
+						<OUTPUT_PATH>target</OUTPUT_PATH>
+						<BUILT_ARTIFACT>${project.build.finalName}.jar</BUILT_ARTIFACT>
 					</buildArgs>
 				</configuration>
 				<dependencies>
