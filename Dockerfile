@@ -1,4 +1,4 @@
-FROM openjdk:9.0.1-11-jdk-slim
+FROM openjdk:9-jre-slim
 
 ARG OUTPUT_PATH
 ARG BUILT_ARTIFACT
