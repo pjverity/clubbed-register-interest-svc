@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Bean;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.Enquiry;
 
 @SpringBootApplication(scanBasePackages = "uk.co.vhome.clubbed")
-public class ClubbedSvcEnquiryHandlerApplication
+public class EnquiryHandlerApplication
 {
-	private static final Class<ClubbedSvcEnquiryHandlerApplication> APPLICATION_CLASS = ClubbedSvcEnquiryHandlerApplication.class;
+	private static final Class<EnquiryHandlerApplication> APPLICATION_CLASS = EnquiryHandlerApplication.class;
 
 	public static void main(String[] args) {
 		SpringApplication.run(APPLICATION_CLASS, args);

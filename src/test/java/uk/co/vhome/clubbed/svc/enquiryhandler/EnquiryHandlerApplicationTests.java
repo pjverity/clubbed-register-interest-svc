@@ -18,8 +18,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {ClubbedSvcEnquiryHandlerApplication.class, WebConfiguration.class, TestConfiguration.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ClubbedSvcEnquiryHandlerApplicationTests
+@SpringBootTest(classes = {EnquiryHandlerApplication.class, WebConfiguration.class, TestConfiguration.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class EnquiryHandlerApplicationTests
 {
 	@Inject
 	private MockMvc mockMvc;
