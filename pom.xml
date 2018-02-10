@@ -10,11 +10,11 @@
 	</parent>
 
 	<groupId>uk.co.vhome.clubbed</groupId>
-	<artifactId>clubbed-svc-enquiry-handler</artifactId>
+	<artifactId>enquiry-handler</artifactId>
 	<version>4.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Clubbed Service: Enquiry Handler</name>
+	<name>Enquiry Handler</name>
 
 	<url>https://github.com/pjverity/${project.artifactId}/wiki</url>
 
