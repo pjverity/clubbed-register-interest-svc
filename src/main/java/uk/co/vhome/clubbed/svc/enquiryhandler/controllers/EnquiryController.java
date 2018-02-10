@@ -7,7 +7,10 @@ import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.repositories.NonAxonEntityRepository;
@@ -22,7 +25,7 @@ import static org.axonframework.commandhandling.GenericCommandMessage.asCommandM
 
 @RestController
 @Validated
-@RequestMapping("/v1/enquiries")
+@RequestMapping("/enquiries/v1")
 public class EnquiryController
 {
 	private static final Log LOGGER = LogFactory.getLog(EnquiryController.class);
@@ -38,7 +41,6 @@ public class EnquiryController
 		this.enquiryRepository = enquiryRepository;
 	}
 
-	@CrossOrigin(origins = {"http://www.${application.domain}"})
 	@PostMapping(path = "/club-enquiry/emails/{email}")
 	public DeferredResult<ResponseEntity<Object>> register(@PathVariable @Valid @NotBlank @Email String email,
 	                                                       @Valid UserDetail userInfo)
