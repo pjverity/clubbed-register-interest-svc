@@ -1,0 +1,13 @@
+*.iml
+pom.xml
+mvnw
+
+.idea
+.mvn
+src
+
+target/*classes
+target/docker
+target/*sources
+target/maven*
+target/*.original
