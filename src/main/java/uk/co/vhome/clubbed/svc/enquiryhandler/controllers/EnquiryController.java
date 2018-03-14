@@ -25,7 +25,7 @@ import static org.axonframework.commandhandling.GenericCommandMessage.asCommandM
 
 @RestController
 @Validated
-@RequestMapping("/enquiries/v1")
+@RequestMapping("/enquiries/v2")
 public class EnquiryController
 {
 	private static final Log LOGGER = LogFactory.getLog(EnquiryController.class);
@@ -56,7 +56,12 @@ public class EnquiryController
 			return handlerResult;
 		}
 
-		NewClubEnquiryCommand newClubEnquiryCommand = new NewClubEnquiryCommand(email, userInfo.getFirstName(), userInfo.getLastName());
+		String phoneNumberOrNull = userInfo.getPhone().isEmpty() ? null : userInfo.getPhone();
+
+		NewClubEnquiryCommand newClubEnquiryCommand = new NewClubEnquiryCommand(email,
+		                                                                        userInfo.getFirstName(),
+		                                                                        userInfo.getLastName(),
+		                                                                        phoneNumberOrNull);
 
 		commandBus.dispatch(asCommandMessage(newClubEnquiryCommand), newEnquiryCommandCallback(email, handlerResult));
 

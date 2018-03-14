@@ -31,6 +31,9 @@ public class Enquiry
 	@Column(name = "enquiry_time", nullable = false)
 	private Instant enquiryTime;
 
+	@Column(name = "phone_number")
+	private String phoneNumber;
+
 	protected Enquiry()
 	{
 	}
@@ -40,7 +43,8 @@ public class Enquiry
 	{
 		apply(new ClubEnquiryCreatedEvent(newClubEnquiryCommand.getEmailAddress(),
 		                                  newClubEnquiryCommand.getFirstName(),
-		                                  newClubEnquiryCommand.getLastName()));
+		                                  newClubEnquiryCommand.getLastName(),
+		                                  newClubEnquiryCommand.getPhoneNumber()));
 	}
 
 	@EventSourcingHandler
@@ -49,6 +53,7 @@ public class Enquiry
 		setEmailAddress(clubEnquiryCreatedEvent.getEmailAddress());
 		setFirstName(clubEnquiryCreatedEvent.getFirstName());
 		setLastName(clubEnquiryCreatedEvent.getLastName());
+		setPhoneNumber(clubEnquiryCreatedEvent.getPhoneNumber());
 		setEnquiryTime(enquiryTime);
 	}
 
@@ -90,5 +95,15 @@ public class Enquiry
 	public void setEnquiryTime(Instant enquiryTime)
 	{
 		this.enquiryTime = enquiryTime;
+	}
+
+	public String getPhoneNumber()
+	{
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber)
+	{
+		this.phoneNumber = phoneNumber;
 	}
 }
