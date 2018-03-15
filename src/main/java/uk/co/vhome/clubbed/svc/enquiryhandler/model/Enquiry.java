@@ -24,7 +24,7 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 public class Enquiry
 {
 	@Id
-	@Column(name = "email_address")
+	@Column(name = "email_address", nullable = false)
 	private String emailAddress;
 
 	@Column(name = "first_name", nullable = false)
@@ -68,6 +68,7 @@ public class Enquiry
 		setFirstName(clubEnquiryCreatedEvent.getFirstName());
 		setLastName(clubEnquiryCreatedEvent.getLastName());
 		setPhoneNumber(clubEnquiryCreatedEvent.getPhoneNumber());
+		setTokenAccepted(false);
 		setEnquiryTime(enquiryTime);
 	}
 
