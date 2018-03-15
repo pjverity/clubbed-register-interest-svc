@@ -5,13 +5,13 @@ import org.apache.commons.logging.LogFactory;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
+import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.AcceptFreeTokenCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.repositories.NonAxonEntityRepository;
 
@@ -41,6 +41,22 @@ public class EnquiryController
 		this.enquiryRepository = enquiryRepository;
 	}
 
+	@GetMapping(path = "/token-claim/emails/{email}")
+	public DeferredResult<ResponseEntity<String>> test(@RequestHeader(HttpHeaders.HOST) String host,
+	                                   @PathVariable @Valid @NotBlank @Email String email)
+	{
+
+		LOGGER.info(email + " accepting free token");
+
+		AcceptFreeTokenCommand acceptFreeTokenCommand = new AcceptFreeTokenCommand(email);
+
+		DeferredResult<ResponseEntity<String>> handlerResult = new DeferredResult<>();
+
+		commandBus.dispatch(asCommandMessage(acceptFreeTokenCommand), tokenClaimCommandCallback(host, email, handlerResult));
+
+		return handlerResult;
+	}
+
 	@PostMapping(path = "/club-enquiry/emails/{email}")
 	public DeferredResult<ResponseEntity<Object>> register(@PathVariable @Valid @NotBlank @Email String email,
 	                                                       @Valid UserDetail userInfo)
@@ -68,6 +84,26 @@ public class EnquiryController
 		return handlerResult;
 	}
 
+	private CommandCallback<Object, Object> tokenClaimCommandCallback(@RequestHeader(HttpHeaders.HOST) String host, @Valid @NotBlank @Email @PathVariable String email, DeferredResult<ResponseEntity<String>> handlerResult)
+	{
+		return new CommandCallback<>()
+		{
+			@Override
+			public void onSuccess(CommandMessage<?> commandMessage, Object result)
+			{
+				handlerResult.setResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, "http://"+host+"/token-claim-ok.html").build());
+				LOGGER.info( "Successfully claimed token for " + email);
+			}
+
+			@Override
+			public void onFailure(CommandMessage<?> commandMessage, Throwable cause)
+			{
+				handlerResult.setErrorResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, "http://"+host+"/token-claim-failed.html").build());
+				LOGGER.error( "Unsuccessfully claimed token for " + email, cause);
+			}
+		};
+	}
+
 	private CommandCallback<Object, Object> newEnquiryCommandCallback(String email, DeferredResult<ResponseEntity<Object>> handlerResult)
 	{
 		return new CommandCallback<>()
@@ -75,15 +111,15 @@ public class EnquiryController
 			@Override
 			public void onSuccess(CommandMessage<?> commandMessage, Object result)
 			{
-				LOGGER.info("Registered enquiry for: " + email);
 				handlerResult.setResult(ResponseEntity.ok().build());
+				LOGGER.info("Registered enquiry for: " + email);
 			}
 
 			@Override
 			public void onFailure(CommandMessage<?> commandMessage, Throwable cause)
 			{
-				LOGGER.error("Failed to register enquiry", cause);
 				handlerResult.setErrorResult(ResponseEntity.badRequest().body(cause.getMessage()));
+				LOGGER.error("Failed to register enquiry", cause);
 			}
 		};
 	}

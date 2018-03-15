@@ -3,6 +3,9 @@ package uk.co.vhome.clubbed.svc.enquiryhandler.model.commands;
 import java.util.Objects;
 import java.util.StringJoiner;
 
+/**
+ * Issued when a new visitor to the site registers
+ */
 public class NewClubEnquiryCommand
 {
 	/**

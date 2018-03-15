@@ -5,6 +5,8 @@ import org.axonframework.eventhandling.Timestamp;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
 import uk.co.vhome.clubbed.apiobjects.ClubEnquiryCreatedEvent;
+import uk.co.vhome.clubbed.apiobjects.FreeTokenAcceptedEvent;
+import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.AcceptFreeTokenCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
 
 import javax.persistence.Column;
@@ -14,6 +16,9 @@ import java.time.Instant;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
+/**
+ * Aggregate root that represents a visitor making an enquiry on the site
+ */
 @Aggregate
 @Entity(name = "enquiries")
 public class Enquiry
@@ -34,6 +39,9 @@ public class Enquiry
 	@Column(name = "phone_number")
 	private String phoneNumber;
 
+	@Column(name = "token_accepted")
+	private Boolean tokenAccepted;
+
 	protected Enquiry()
 	{
 	}
@@ -47,6 +55,12 @@ public class Enquiry
 		                                  newClubEnquiryCommand.getPhoneNumber()));
 	}
 
+	@CommandHandler
+	void handle(AcceptFreeTokenCommand acceptFreeTokenCommand)
+	{
+		apply(new FreeTokenAcceptedEvent(acceptFreeTokenCommand.getEmailAddress()));
+	}
+
 	@EventSourcingHandler
 	private void on(ClubEnquiryCreatedEvent clubEnquiryCreatedEvent, @Timestamp Instant enquiryTime)
 	{
@@ -55,6 +69,12 @@ public class Enquiry
 		setLastName(clubEnquiryCreatedEvent.getLastName());
 		setPhoneNumber(clubEnquiryCreatedEvent.getPhoneNumber());
 		setEnquiryTime(enquiryTime);
+	}
+
+	@EventSourcingHandler
+	private void on(FreeTokenAcceptedEvent clubEnquiryCreatedEvent)
+	{
+		setTokenAccepted(true);
 	}
 
 	public String getEmailAddress()
@@ -105,5 +125,15 @@ public class Enquiry
 	public void setPhoneNumber(String phoneNumber)
 	{
 		this.phoneNumber = phoneNumber;
+	}
+
+	public Boolean getTokenAccepted()
+	{
+		return tokenAccepted;
+	}
+
+	public void setTokenAccepted(Boolean tokenAccepted)
+	{
+		this.tokenAccepted = tokenAccepted;
 	}
 }
