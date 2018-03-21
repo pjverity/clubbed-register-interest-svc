@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import static org.axonframework.commandhandling.GenericCommandMessage.asCommandM
 @RestController
 @Validated
 @RequestMapping("/enquiries/v2")
+@CrossOrigin(origins = "${enquiry-handler.web-host}")
 public class EnquiryController
 {
 	private static final Log LOGGER = LogFactory.getLog(EnquiryController.class);
@@ -34,16 +36,18 @@ public class EnquiryController
 
 	private final NonAxonEntityRepository enquiryRepository;
 
+	private final String webHost;
+
 	@Inject
-	public EnquiryController(CommandBus commandBus, NonAxonEntityRepository enquiryRepository)
+	public EnquiryController(CommandBus commandBus, NonAxonEntityRepository enquiryRepository, @Value("${enquiry-handler.web-host}") String webHost)
 	{
 		this.commandBus = commandBus;
 		this.enquiryRepository = enquiryRepository;
+		this.webHost = webHost;
 	}
 
 	@GetMapping(path = "/token-claim/emails/{email}")
-	public DeferredResult<ResponseEntity<String>> test(@RequestHeader(HttpHeaders.HOST) String host,
-	                                   @PathVariable @Valid @NotBlank @Email String email)
+	public DeferredResult<ResponseEntity<String>> tokenClaim(@PathVariable @Valid @NotBlank @Email String email)
 	{
 
 		LOGGER.info(email + " accepting free token");
@@ -52,7 +56,7 @@ public class EnquiryController
 
 		DeferredResult<ResponseEntity<String>> handlerResult = new DeferredResult<>();
 
-		commandBus.dispatch(asCommandMessage(acceptFreeTokenCommand), tokenClaimCommandCallback(host, email, handlerResult));
+		commandBus.dispatch(asCommandMessage(acceptFreeTokenCommand), tokenClaimCommandCallback(email, handlerResult));
 
 		return handlerResult;
 	}
@@ -84,21 +88,21 @@ public class EnquiryController
 		return handlerResult;
 	}
 
-	private CommandCallback<Object, Object> tokenClaimCommandCallback(@RequestHeader(HttpHeaders.HOST) String host, @Valid @NotBlank @Email @PathVariable String email, DeferredResult<ResponseEntity<String>> handlerResult)
+	private CommandCallback<Object, Object> tokenClaimCommandCallback(String email, DeferredResult<ResponseEntity<String>> handlerResult)
 	{
 		return new CommandCallback<>()
 		{
 			@Override
 			public void onSuccess(CommandMessage<?> commandMessage, Object result)
 			{
-				handlerResult.setResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, "http://"+host+"/token-claim-ok.html").build());
+				handlerResult.setResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, webHost+"/token-claim-ok.html").build());
 				LOGGER.info( "Successfully claimed token for " + email);
 			}
 
 			@Override
 			public void onFailure(CommandMessage<?> commandMessage, Throwable cause)
 			{
-				handlerResult.setErrorResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, "http://"+host+"/token-claim-failed.html").build());
+				handlerResult.setErrorResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, webHost+"/token-claim-failed.html").build());
 				LOGGER.error( "Unsuccessfully claimed token for " + email, cause);
 			}
 		};
