@@ -42,9 +42,7 @@ public class Enquiry
 	@Column(name = "token_accepted")
 	private Boolean tokenAccepted;
 
-	protected Enquiry()
-	{
-	}
+	private Enquiry() { } // JPA
 
 	@CommandHandler
 	Enquiry(NewClubEnquiryCommand newClubEnquiryCommand)
@@ -58,7 +56,10 @@ public class Enquiry
 	@CommandHandler
 	void handle(AcceptFreeTokenCommand acceptFreeTokenCommand)
 	{
-		apply(new FreeTokenAcceptedEvent(acceptFreeTokenCommand.getEmailAddress()));
+		if ( !isTokenAccepted() )
+		{
+			apply(new FreeTokenAcceptedEvent(acceptFreeTokenCommand.getEmailAddress()));
+		}
 	}
 
 	@EventSourcingHandler
@@ -128,7 +129,7 @@ public class Enquiry
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Boolean getTokenAccepted()
+	public Boolean isTokenAccepted()
 	{
 		return tokenAccepted;
 	}
