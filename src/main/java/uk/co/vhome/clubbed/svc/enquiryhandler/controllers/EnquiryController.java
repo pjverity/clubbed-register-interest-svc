@@ -26,7 +26,7 @@ import static org.axonframework.commandhandling.GenericCommandMessage.asCommandM
 
 @RestController
 @Validated
-@RequestMapping("/enquiries/v2")
+@RequestMapping("/v2")
 @CrossOrigin(origins = "${enquiry-handler.web-host}")
 public class EnquiryController
 {
