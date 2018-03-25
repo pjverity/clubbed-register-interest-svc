@@ -95,14 +95,14 @@ public class EnquiryController
 			@Override
 			public void onSuccess(CommandMessage<?> commandMessage, Object result)
 			{
-				handlerResult.setResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, webHost+"/token-claim-ok.html").build());
+				handlerResult.setResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, webHost+"/token-claim-ok").build());
 				LOGGER.info( "Successfully claimed token for " + email);
 			}
 
 			@Override
 			public void onFailure(CommandMessage<?> commandMessage, Throwable cause)
 			{
-				handlerResult.setErrorResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, webHost+"/token-claim-failed.html").build());
+				handlerResult.setErrorResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, webHost+"/token-claim-failed").build());
 				LOGGER.error( "Unsuccessfully claimed token for " + email, cause);
 			}
 		};

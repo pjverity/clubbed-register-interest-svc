@@ -84,7 +84,7 @@ public class Enquiry
 		return emailAddress;
 	}
 
-	public void setEmailAddress(String emailAddress)
+	private void setEmailAddress(String emailAddress)
 	{
 		this.emailAddress = emailAddress;
 	}
@@ -94,7 +94,7 @@ public class Enquiry
 		return firstName;
 	}
 
-	public void setFirstName(String firstName)
+	private void setFirstName(String firstName)
 	{
 		this.firstName = firstName;
 	}
@@ -104,7 +104,7 @@ public class Enquiry
 		return lastName;
 	}
 
-	public void setLastName(String lastName)
+	private void setLastName(String lastName)
 	{
 		this.lastName = lastName;
 	}
@@ -114,7 +114,7 @@ public class Enquiry
 		return enquiryTime;
 	}
 
-	public void setEnquiryTime(Instant enquiryTime)
+	private void setEnquiryTime(Instant enquiryTime)
 	{
 		this.enquiryTime = enquiryTime;
 	}
@@ -124,7 +124,7 @@ public class Enquiry
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(String phoneNumber)
+	private void setPhoneNumber(String phoneNumber)
 	{
 		this.phoneNumber = phoneNumber;
 	}
@@ -134,7 +134,7 @@ public class Enquiry
 		return tokenAccepted;
 	}
 
-	public void setTokenAccepted(Boolean tokenAccepted)
+	private void setTokenAccepted(Boolean tokenAccepted)
 	{
 		this.tokenAccepted = tokenAccepted;
 	}
