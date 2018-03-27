@@ -11,10 +11,5 @@ EXPOSE 8080
 
 CMD java -Xms50m -Xmx100m --add-modules java.xml.bind \
     -Dspring.config.additional-location=file:/etc/config/ \
-    -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} \
-    -Dspring.datasource.url=${DATASOURCE_URL} \
-    -Dspring.datasource.username=${DATASOURCE_USERNAME} \
-    -Dspring.datasource.password=${DATASOURCE_PASSWORD} \
-    -Dapplication.amqp.queue.name=${AMQP_QUEUE_NAME} \
-    -Dserver.tomcat.max-threads=${SERVER_TOMCAT_MAX_THREADS} \
+    -Dspring.profiles.active=${ENV_SPRING_PROFILES_ACTIVE} \
     -jar /opt/${BUILT_ARTIFACT}
