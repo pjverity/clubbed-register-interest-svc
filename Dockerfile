@@ -12,4 +12,5 @@ EXPOSE 8080
 CMD java -Xms50m -Xmx100m --add-modules java.xml.bind \
     -Dspring.config.additional-location=file:/etc/config/ \
     -Dspring.profiles.active=${ENV_SPRING_PROFILES_ACTIVE} \
+    -Duser.timezone=UTC \
     -jar /opt/${BUILT_ARTIFACT}
