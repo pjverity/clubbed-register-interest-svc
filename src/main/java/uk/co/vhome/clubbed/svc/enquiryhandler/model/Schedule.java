@@ -19,6 +19,8 @@ public class Schedule
 
 	private LocalTime time;
 
+	private LocalTime duration;
+
 	private String name;
 
 	private String location;
@@ -42,6 +44,11 @@ public class Schedule
 	public LocalTime getTime()
 	{
 		return time;
+	}
+
+	public LocalTime getDuration()
+	{
+		return duration;
 	}
 
 	public String getName()
