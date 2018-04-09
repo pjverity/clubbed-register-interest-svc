@@ -11,7 +11,7 @@ CREATE TABLE schedules
 		PRIMARY KEY,
 	commences DATE                   NOT NULL,
 	time      TIME WITHOUT TIME ZONE NOT NULL,
-	duration  INTERVAL               NOT NULL,
+	duration  BIGINT                 NOT NULL, -- No thorough support for INTERVAL yet
 	name      VARCHAR(255)           NOT NULL,
 	location  VARCHAR(255)           NOT NULL,
 	active    BOOLEAN                NOT NULL DEFAULT TRUE

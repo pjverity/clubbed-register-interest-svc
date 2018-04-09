@@ -1,6 +1,7 @@
 package uk.co.vhome.clubbed.svc.enquiryhandler.model;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -19,7 +20,7 @@ public class Schedule
 
 	private LocalTime time;
 
-	private LocalTime duration;
+	private Duration duration;
 
 	private String name;
 
@@ -46,9 +47,14 @@ public class Schedule
 		return time;
 	}
 
-	public LocalTime getDuration()
+	public String getDuration()
 	{
-		return duration;
+		if ( duration.toMinutesPart() > 0 )
+		{
+			return String.format("%dh %02dm", duration.toHoursPart(), duration.toMinutesPart());
+		}
+
+		return String.format("%dh", duration.toHoursPart());
 	}
 
 	public String getName()
