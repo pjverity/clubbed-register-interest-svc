@@ -47,14 +47,9 @@ public class Schedule
 		return time;
 	}
 
-	public String getDuration()
+	public Duration getDuration()
 	{
-		if ( duration.toMinutesPart() > 0 )
-		{
-			return String.format("%dh %02dm", duration.toHoursPart(), duration.toMinutesPart());
-		}
-
-		return String.format("%dh", duration.toHoursPart());
+		return duration;
 	}
 
 	public String getName()
