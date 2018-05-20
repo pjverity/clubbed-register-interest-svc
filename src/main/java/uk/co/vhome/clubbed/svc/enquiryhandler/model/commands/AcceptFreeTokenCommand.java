@@ -8,11 +8,19 @@ import org.axonframework.commandhandling.TargetAggregateIdentifier;
 public class AcceptFreeTokenCommand
 {
 	@TargetAggregateIdentifier
+	private final String enquiryId;
+
 	private final String emailAddress;
 
-	public AcceptFreeTokenCommand(String emailAddress)
+	public AcceptFreeTokenCommand(String enquiryId, String emailAddress)
 	{
+		this.enquiryId = enquiryId;
 		this.emailAddress = emailAddress;
+	}
+
+	public String getEnquiryId()
+	{
+		return enquiryId;
 	}
 
 	public String getEmailAddress()

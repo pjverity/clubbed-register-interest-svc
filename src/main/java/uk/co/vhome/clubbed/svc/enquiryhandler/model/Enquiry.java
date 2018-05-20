@@ -4,10 +4,11 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.Timestamp;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
-import uk.co.vhome.clubbed.apiobjects.ClubEnquiryCreatedEvent;
-import uk.co.vhome.clubbed.apiobjects.FreeTokenAcceptedEvent;
+import security.MD5Helper;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.AcceptFreeTokenCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
+import uk.co.vhome.clubbed.svc.enquiryhandler.model.events.ClubEnquiryCreatedEvent;
+import uk.co.vhome.clubbed.svc.enquiryhandler.model.events.FreeTokenAcceptedEvent;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,20 +25,11 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 public class Enquiry
 {
 	@Id
-	@Column(name = "email_address", nullable = false)
-	private String emailAddress;
-
-	@Column(name = "first_name", nullable = false)
-	private String firstName;
-
-	@Column(name = "last_name", nullable = false)
-	private String lastName;
+	@Column(name = "enquiry_id", nullable = false)
+	private String enquiryId;
 
 	@Column(name = "enquiry_time", nullable = false)
 	private Instant enquiryTime;
-
-	@Column(name = "phone_number")
-	private String phoneNumber;
 
 	@Column(name = "token_accepted")
 	private Boolean tokenAccepted;
@@ -47,7 +39,7 @@ public class Enquiry
 	@CommandHandler
 	Enquiry(NewClubEnquiryCommand newClubEnquiryCommand)
 	{
-		apply(new ClubEnquiryCreatedEvent(newClubEnquiryCommand.getEmailAddress(),
+		apply(new ClubEnquiryCreatedEvent(newClubEnquiryCommand.getEnquiryId(),
 		                                  newClubEnquiryCommand.getFirstName(),
 		                                  newClubEnquiryCommand.getLastName(),
 		                                  newClubEnquiryCommand.getPhoneNumber()));
@@ -65,10 +57,9 @@ public class Enquiry
 	@EventSourcingHandler
 	private void on(ClubEnquiryCreatedEvent clubEnquiryCreatedEvent, @Timestamp Instant enquiryTime)
 	{
-		setEmailAddress(clubEnquiryCreatedEvent.getEmailAddress());
-		setFirstName(clubEnquiryCreatedEvent.getFirstName());
-		setLastName(clubEnquiryCreatedEvent.getLastName());
-		setPhoneNumber(clubEnquiryCreatedEvent.getPhoneNumber());
+		String enquiryId = MD5Helper.hash(clubEnquiryCreatedEvent.getEmailAddress());
+
+		setEnquiryId(enquiryId);
 		setTokenAccepted(false);
 		setEnquiryTime(enquiryTime);
 	}
@@ -79,34 +70,14 @@ public class Enquiry
 		setTokenAccepted(true);
 	}
 
-	public String getEmailAddress()
+	public String getEnquiryId()
 	{
-		return emailAddress;
+		return enquiryId;
 	}
 
-	private void setEmailAddress(String emailAddress)
+	private void setEnquiryId(String enquiryId)
 	{
-		this.emailAddress = emailAddress;
-	}
-
-	public String getFirstName()
-	{
-		return firstName;
-	}
-
-	private void setFirstName(String firstName)
-	{
-		this.firstName = firstName;
-	}
-
-	public String getLastName()
-	{
-		return lastName;
-	}
-
-	private void setLastName(String lastName)
-	{
-		this.lastName = lastName;
+		this.enquiryId = enquiryId;
 	}
 
 	public Instant getEnquiryTime()
@@ -117,16 +88,6 @@ public class Enquiry
 	private void setEnquiryTime(Instant enquiryTime)
 	{
 		this.enquiryTime = enquiryTime;
-	}
-
-	public String getPhoneNumber()
-	{
-		return phoneNumber;
-	}
-
-	private void setPhoneNumber(String phoneNumber)
-	{
-		this.phoneNumber = phoneNumber;
 	}
 
 	public Boolean isTokenAccepted()

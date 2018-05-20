@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
+import security.MD5Helper;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.AcceptFreeTokenCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.repositories.NonAxonEntityRepository;
@@ -49,14 +50,15 @@ public class EnquiryController
 	@GetMapping(path = "/token-claim/emails/{email}")
 	public DeferredResult<ResponseEntity<String>> tokenClaim(@PathVariable @Valid @NotBlank @Email String email)
 	{
+		String enquiryId = MD5Helper.hash(email);
 
-		LOGGER.info(email + " accepting free token");
+		LOGGER.info(enquiryId + " accepting free token");
 
-		AcceptFreeTokenCommand acceptFreeTokenCommand = new AcceptFreeTokenCommand(email);
+		AcceptFreeTokenCommand acceptFreeTokenCommand = new AcceptFreeTokenCommand(enquiryId, email);
 
 		DeferredResult<ResponseEntity<String>> handlerResult = new DeferredResult<>();
 
-		commandBus.dispatch(asCommandMessage(acceptFreeTokenCommand), tokenClaimCommandCallback(email, handlerResult));
+		commandBus.dispatch(asCommandMessage(acceptFreeTokenCommand), tokenClaimCommandCallback(enquiryId, handlerResult));
 
 		return handlerResult;
 	}
@@ -68,7 +70,9 @@ public class EnquiryController
 
 		DeferredResult<ResponseEntity<Object>> handlerResult = new DeferredResult<>();
 
-		if (enquiryRepository.existsById(email))
+		String enquiryId = MD5Helper.hash(email);
+
+		if (enquiryRepository.existsById(enquiryId))
 		{
 			ApiError apiError = new ApiError("email", "Address already registered");
 			ResponseEntity<Object> body = ResponseEntity.badRequest().body(Collections.singleton(apiError));
@@ -83,12 +87,12 @@ public class EnquiryController
 		                                                                        userInfo.getLastName(),
 		                                                                        phoneNumberOrNull);
 
-		commandBus.dispatch(asCommandMessage(newClubEnquiryCommand), newEnquiryCommandCallback(email, handlerResult));
+		commandBus.dispatch(asCommandMessage(newClubEnquiryCommand), newEnquiryCommandCallback(enquiryId, handlerResult));
 
 		return handlerResult;
 	}
 
-	private CommandCallback<Object, Object> tokenClaimCommandCallback(String email, DeferredResult<ResponseEntity<String>> handlerResult)
+	private CommandCallback<Object, Object> tokenClaimCommandCallback(String enquiryId, DeferredResult<ResponseEntity<String>> handlerResult)
 	{
 		return new CommandCallback<>()
 		{
@@ -96,19 +100,19 @@ public class EnquiryController
 			public void onSuccess(CommandMessage<?> commandMessage, Object result)
 			{
 				handlerResult.setResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, webHost+"/token-claim-ok").build());
-				LOGGER.info( "Successfully claimed token for " + email);
+				LOGGER.info( "Successfully claimed token for " + enquiryId);
 			}
 
 			@Override
 			public void onFailure(CommandMessage<?> commandMessage, Throwable cause)
 			{
 				handlerResult.setErrorResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, webHost+"/token-claim-failed").build());
-				LOGGER.error( "Unsuccessfully claimed token for " + email, cause);
+				LOGGER.error( "Unsuccessfully claimed token for " + enquiryId, cause);
 			}
 		};
 	}
 
-	private CommandCallback<Object, Object> newEnquiryCommandCallback(String email, DeferredResult<ResponseEntity<Object>> handlerResult)
+	private CommandCallback<Object, Object> newEnquiryCommandCallback(String enquiryId, DeferredResult<ResponseEntity<Object>> handlerResult)
 	{
 		return new CommandCallback<>()
 		{
@@ -116,7 +120,7 @@ public class EnquiryController
 			public void onSuccess(CommandMessage<?> commandMessage, Object result)
 			{
 				handlerResult.setResult(ResponseEntity.ok().build());
-				LOGGER.info("Registered enquiry for: " + email);
+				LOGGER.info("Registered enquiry for: " + enquiryId);
 			}
 
 			@Override

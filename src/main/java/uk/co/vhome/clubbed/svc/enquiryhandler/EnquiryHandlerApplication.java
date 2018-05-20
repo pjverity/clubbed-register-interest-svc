@@ -1,6 +1,5 @@
 package uk.co.vhome.clubbed.svc.enquiryhandler;
 
-import org.axonframework.amqp.eventhandling.RoutingKeyResolver;
 import org.axonframework.commandhandling.model.GenericJpaRepository;
 import org.axonframework.common.jpa.EntityManagerProvider;
 import org.axonframework.eventhandling.EventBus;
@@ -8,7 +7,6 @@ import org.axonframework.eventhandling.saga.repository.SagaStore;
 import org.axonframework.eventhandling.saga.repository.inmemory.InMemorySagaStore;
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
 import org.axonframework.eventsourcing.eventstore.inmemory.InMemoryEventStorageEngine;
-import org.springframework.amqp.core.Queue;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -33,12 +31,6 @@ public class EnquiryHandlerApplication
 	GenericJpaRepository<Enquiry> enquiryRepository(EntityManagerProvider entityManagerProvider, EventBus eventBus)
 	{
 		return new GenericJpaRepository<>(entityManagerProvider, Enquiry.class, eventBus);
-	}
-
-	@Bean
-	RoutingKeyResolver routingKeyResolver(Queue queue)
-	{
-		return eventMessage -> queue.getName();
 	}
 
 	@Bean
