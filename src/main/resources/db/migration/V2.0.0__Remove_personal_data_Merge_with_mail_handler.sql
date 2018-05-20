@@ -13,8 +13,8 @@ ALTER TABLE enquiries
 ALTER TABLE enquiries
 	RENAME CONSTRAINT enquiries_email_address_pkey TO enquiries_enquiry_id_pkey;
 
-ALTER TABLE enquiries
-	RENAME CONSTRAINT enquiries_email_address_uidx TO enquiries_enquiry_id_uidx;
+ALTER INDEX enquiries_email_address_uidx
+	RENAME TO enquiries_enquiry_id_uidx;
 
 --- MD5-hash all current email addresses to obscure them and make then irreversible
 UPDATE enquiries e1
