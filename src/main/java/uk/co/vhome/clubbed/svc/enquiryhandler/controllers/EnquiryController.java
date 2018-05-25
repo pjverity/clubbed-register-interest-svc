@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,6 @@ import static org.axonframework.commandhandling.GenericCommandMessage.asCommandM
 @RestController
 @Validated
 @RequestMapping("/v2")
-@CrossOrigin(origins = "${enquiry-handler.web-host}")
 public class EnquiryController
 {
 	private static final Log LOGGER = LogFactory.getLog(EnquiryController.class);
@@ -37,14 +35,11 @@ public class EnquiryController
 
 	private final NonAxonEntityRepository enquiryRepository;
 
-	private final String webHost;
-
 	@Inject
-	public EnquiryController(CommandBus commandBus, NonAxonEntityRepository enquiryRepository, @Value("${enquiry-handler.web-host}") String webHost)
+	public EnquiryController(CommandBus commandBus, NonAxonEntityRepository enquiryRepository)
 	{
 		this.commandBus = commandBus;
 		this.enquiryRepository = enquiryRepository;
-		this.webHost = webHost;
 	}
 
 	@GetMapping(path = "/token-claim/emails/{email}")
@@ -99,14 +94,14 @@ public class EnquiryController
 			@Override
 			public void onSuccess(CommandMessage<?> commandMessage, Object result)
 			{
-				handlerResult.setResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, webHost+"/token-claim-ok").build());
+				handlerResult.setResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, "/token-claim-ok").build());
 				LOGGER.info( "Successfully claimed token for " + enquiryId);
 			}
 
 			@Override
 			public void onFailure(CommandMessage<?> commandMessage, Throwable cause)
 			{
-				handlerResult.setErrorResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, webHost+"/token-claim-failed").build());
+				handlerResult.setErrorResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, "/token-claim-failed").build());
 				LOGGER.error( "Unsuccessfully claimed token for " + enquiryId, cause);
 			}
 		};
