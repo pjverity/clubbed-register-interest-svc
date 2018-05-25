@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import security.MD5Helper;
+import uk.co.vhome.clubbed.svc.security.MD5Helper;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.AcceptFreeTokenCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.repositories.NonAxonEntityRepository;
