@@ -1,4 +1,6 @@
-package uk.co.vhome.clubbed.svc.enquiryhandler.model.events;
+package uk.co.vhome.clubbed.svc.common.events;
+
+import uk.co.vhome.clubbed.svc.enquiryhandler.model.events.EnquiryEvent;
 
 import java.util.Objects;
 import java.util.StringJoiner;

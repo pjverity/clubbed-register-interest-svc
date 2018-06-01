@@ -4,7 +4,7 @@ import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
-import uk.co.vhome.clubbed.svc.enquiryhandler.model.events.ClubEnquiryCreatedEvent;
+import uk.co.vhome.clubbed.svc.common.events.ClubEnquiryCreatedEvent;
 
 import static org.axonframework.test.matchers.Matchers.*;
 

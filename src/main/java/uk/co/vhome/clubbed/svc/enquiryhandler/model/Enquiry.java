@@ -7,8 +7,8 @@ import org.axonframework.spring.stereotype.Aggregate;
 import uk.co.vhome.clubbed.svc.security.MD5Helper;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.AcceptFreeTokenCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
-import uk.co.vhome.clubbed.svc.enquiryhandler.model.events.ClubEnquiryCreatedEvent;
-import uk.co.vhome.clubbed.svc.enquiryhandler.model.events.FreeTokenAcceptedEvent;
+import uk.co.vhome.clubbed.svc.common.events.ClubEnquiryCreatedEvent;
+import uk.co.vhome.clubbed.svc.common.events.FreeTokenAcceptedEvent;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

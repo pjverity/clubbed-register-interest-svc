@@ -7,8 +7,8 @@ import org.mockito.MockitoAnnotations;
 import uk.co.vhome.clubbed.svc.emailnotifier.mail.AdminNotificationMailMessageBuilder;
 import uk.co.vhome.clubbed.svc.emailnotifier.mail.EnquiryResponseMailMessageBuilder;
 import uk.co.vhome.clubbed.svc.emailnotifier.mail.MailMessageSender;
-import uk.co.vhome.clubbed.svc.enquiryhandler.model.events.ClubEnquiryCreatedEvent;
-import uk.co.vhome.clubbed.svc.enquiryhandler.model.events.FreeTokenAcceptedEvent;
+import uk.co.vhome.clubbed.svc.common.events.ClubEnquiryCreatedEvent;
+import uk.co.vhome.clubbed.svc.common.events.FreeTokenAcceptedEvent;
 
 import java.io.IOException;
 
