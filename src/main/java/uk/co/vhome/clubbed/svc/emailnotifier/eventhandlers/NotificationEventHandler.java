@@ -1,4 +1,4 @@
-package uk.co.vhome.clubbed.svc.enquiryhandler.eventhandlers;
+package uk.co.vhome.clubbed.svc.emailnotifier.eventhandlers;
 
 import freemarker.template.TemplateException;
 import org.axonframework.config.ProcessingGroup;
@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Component;
-import uk.co.vhome.clubbed.svc.enquiryhandler.mail.AdminNotificationMailMessageBuilder;
-import uk.co.vhome.clubbed.svc.enquiryhandler.mail.EnquiryResponseMailMessageBuilder;
-import uk.co.vhome.clubbed.svc.enquiryhandler.mail.MailMessageSender;
+import uk.co.vhome.clubbed.svc.emailnotifier.mail.AdminNotificationMailMessageBuilder;
+import uk.co.vhome.clubbed.svc.emailnotifier.mail.EnquiryResponseMailMessageBuilder;
+import uk.co.vhome.clubbed.svc.emailnotifier.mail.MailMessageSender;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.events.ClubEnquiryCreatedEvent;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.events.FreeTokenAcceptedEvent;
 

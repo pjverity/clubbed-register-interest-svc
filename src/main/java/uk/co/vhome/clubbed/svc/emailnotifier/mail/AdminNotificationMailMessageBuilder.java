@@ -1,4 +1,4 @@
-package uk.co.vhome.clubbed.svc.enquiryhandler.mail;
+package uk.co.vhome.clubbed.svc.emailnotifier.mail;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;

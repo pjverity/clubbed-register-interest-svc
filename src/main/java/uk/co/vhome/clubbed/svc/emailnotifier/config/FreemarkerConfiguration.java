@@ -1,11 +1,11 @@
-package uk.co.vhome.clubbed.svc.enquiryhandler.config;
+package uk.co.vhome.clubbed.svc.emailnotifier.config;
 
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import uk.co.vhome.clubbed.svc.enquiryhandler.model.MailTemplate;
-import uk.co.vhome.clubbed.svc.enquiryhandler.repositories.MailTemplateRepository;
+import uk.co.vhome.clubbed.svc.emailnotifier.model.MailTemplate;
+import uk.co.vhome.clubbed.svc.emailnotifier.repositories.MailTemplateRepository;
 
 import java.io.IOException;
 import java.io.Reader;

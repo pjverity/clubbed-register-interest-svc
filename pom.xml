@@ -33,89 +33,64 @@
 		<java.version>10</java.version>
 
 		<axon.version>3.0.7</axon.version>
-		<junit-jupiter.version>5.0.3</junit-jupiter.version>
+		<junit-jupiter.version>5.2.0</junit-jupiter.version>
 	</properties>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>uk.co.vhome.clubbed</groupId>
-				<artifactId>clubbed-bom</artifactId>
-				<version>3.2.1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
-		</dependency>
-
+		<!-- Application Health -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<!-- Expose Srping Data Repositories as REST endpoints-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+
+		<!-- Persistence uses JPA -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- E-Mail integration -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
+		<!-- Templating engine for mail content -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
 
+		<!-- Event sourcing and distribution -->
 		<dependency>
 			<groupId>org.axonframework</groupId>
 			<artifactId>axon-spring-boot-autoconfigure</artifactId>
 			<version>${axon.version}</version>
 		</dependency>
 
+		<!-- Database driver to use. SpringBoot will autodetect Postgres as the DB platform-->
 		<dependency>
-			<groupId>uk.co.vhome.clubbed</groupId>
-			<artifactId>clubbed-db</artifactId>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 
+		<!-- Activates DB migrations in SpringBoot -->
 		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>2.0.1.Final</version>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
 		</dependency>
 
-		<!-- Provides the implementation of the javax.validation spec -->
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>6.0.7.Final</version>
-		</dependency>
 
-		<dependency>
-			<groupId>org.axonframework</groupId>
-			<artifactId>axon-spring</artifactId>
-			<version>${axon.version}</version>
-		</dependency>
+		<!-- Test Dependencies -->
 
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<version>1</version>
-		</dependency>
-
+		<!-- Standard SpringBoot Test dependencies, but exclude JUnit 4.x  -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -128,6 +103,21 @@
 			</exclusions>
 		</dependency>
 
+		<!-- Start with JUnit 5 -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- In-memory database -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Test fixtures for Axon -->
 		<dependency>
 			<groupId>org.axonframework</groupId>
 			<artifactId>axon-test</artifactId>
@@ -135,18 +125,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>3.9.0</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -196,12 +174,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19.1</version>
+				<version>2.21.0</version>
+				<configuration>
+					<argLine>--add-modules java.xml.bind</argLine>
+				</configuration>
 				<dependencies>
 					<dependency>
 						<groupId>org.junit.platform</groupId>
 						<artifactId>junit-platform-surefire-provider</artifactId>
-						<version>1.0.0</version>
+						<version>1.2.0</version>
 					</dependency>
 					<dependency>
 						<groupId>org.junit.jupiter</groupId>
@@ -214,7 +195,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.19.1</version>
+				<version>2.21.0</version>
 				<configuration>
 					<argLine>--add-modules java.xml.bind</argLine>
 				</configuration>
@@ -222,7 +203,7 @@
 					<dependency>
 						<groupId>org.junit.platform</groupId>
 						<artifactId>junit-platform-surefire-provider</artifactId>
-						<version>1.0.0</version>
+						<version>1.2.0</version>
 					</dependency>
 					<dependency>
 						<groupId>org.junit.jupiter</groupId>

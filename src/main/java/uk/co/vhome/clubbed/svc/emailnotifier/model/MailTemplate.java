@@ -1,4 +1,4 @@
-package uk.co.vhome.clubbed.svc.enquiryhandler.model;
+package uk.co.vhome.clubbed.svc.emailnotifier.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -39,7 +39,7 @@ public class Enquiry
 	@CommandHandler
 	Enquiry(NewClubEnquiryCommand newClubEnquiryCommand)
 	{
-		apply(new ClubEnquiryCreatedEvent(newClubEnquiryCommand.getEnquiryId(),
+		apply(new ClubEnquiryCreatedEvent(newClubEnquiryCommand.getEmailAddress(),
 		                                  newClubEnquiryCommand.getFirstName(),
 		                                  newClubEnquiryCommand.getLastName(),
 		                                  newClubEnquiryCommand.getPhoneNumber()));

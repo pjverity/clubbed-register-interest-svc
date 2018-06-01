@@ -16,7 +16,6 @@ import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.AcceptFreeTokenComm
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.repositories.NonAxonEntityRepository;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -35,7 +34,6 @@ public class EnquiryController
 
 	private final NonAxonEntityRepository enquiryRepository;
 
-	@Inject
 	public EnquiryController(CommandBus commandBus, NonAxonEntityRepository enquiryRepository)
 	{
 		this.commandBus = commandBus;

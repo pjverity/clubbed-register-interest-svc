@@ -1,4 +1,4 @@
-package uk.co.vhome.clubbed.svc.enquiryhandler;
+package uk.co.vhome.clubbed.svc;
 
 import org.axonframework.commandhandling.model.GenericJpaRepository;
 import org.axonframework.common.jpa.EntityManagerProvider;
