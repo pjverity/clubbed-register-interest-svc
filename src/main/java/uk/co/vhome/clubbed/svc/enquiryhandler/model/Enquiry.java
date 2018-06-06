@@ -4,7 +4,7 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.Timestamp;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
-import uk.co.vhome.clubbed.svc.security.MD5Helper;
+import uk.co.vhome.clubbed.svc.enquiryhandler.security.MD5Helper;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.AcceptFreeTokenCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
 import uk.co.vhome.clubbed.svc.common.events.ClubEnquiryCreatedEvent;

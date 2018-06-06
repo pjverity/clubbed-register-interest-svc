@@ -1,4 +1,4 @@
-package uk.co.vhome.clubbed.svc.security;
+package uk.co.vhome.clubbed.svc.enquiryhandler.security;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
