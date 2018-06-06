@@ -18,7 +18,7 @@ public class FreemarkerConfiguration
 	@Bean
 	Configuration freemarkerConfigurationBean(MailTemplateRepository mailTemplateRepository)
 	{
-		Configuration cfg = new Configuration(Configuration.VERSION_2_3_26);
+		Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
 
 		cfg.setDefaultEncoding("UTF-8");
 		cfg.setLogTemplateExceptions(false);
