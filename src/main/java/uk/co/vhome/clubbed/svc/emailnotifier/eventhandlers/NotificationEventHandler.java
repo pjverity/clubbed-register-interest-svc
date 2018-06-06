@@ -1,10 +1,10 @@
 package uk.co.vhome.clubbed.svc.emailnotifier.eventhandlers;
 
 import freemarker.template.TemplateException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ import java.io.IOException;
 @ProcessingGroup("enquiry")
 public class NotificationEventHandler
 {
-	private static final Logger LOGGER = LoggerFactory.getLogger(NotificationEventHandler.class);
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	private static final String CLUB_ENQUIRY = "club_enquiry";
 
@@ -55,7 +55,7 @@ public class NotificationEventHandler
 			                       clubEnquiryCreatedEvent.getEmailAddress(),
 			                       domainEmailAddress, domainEmailName);
 
-			LOGGER.info("Notified: " + clubEnquiryCreatedEvent.getEmailAddress());
+			LOGGER.info("Notified: {}", clubEnquiryCreatedEvent.getEmailAddress());
 
 			messageContent = adminNotificationMailMessageBuilder.build(ADMIN_NOTIFICATION,
 			                                                           "New Registration",
@@ -82,7 +82,7 @@ public class NotificationEventHandler
 	        AdminNotificationMailMessageBuilder adminNotificationMailMessageBuilder,
 	        MailMessageSender mailMessageSender)
 	{
-		LOGGER.info("Notified: " + domainEmailAddress + " free token claimed");
+		LOGGER.info("Notified: {} free token claimed", domainEmailAddress);
 
 		try
 		{

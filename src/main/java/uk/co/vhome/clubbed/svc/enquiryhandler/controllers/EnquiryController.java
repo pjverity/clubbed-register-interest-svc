@@ -1,7 +1,7 @@
 package uk.co.vhome.clubbed.svc.enquiryhandler.controllers;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
@@ -28,7 +28,7 @@ import static org.axonframework.commandhandling.GenericCommandMessage.asCommandM
 @RequestMapping("/v2")
 public class EnquiryController
 {
-	private static final Log LOGGER = LogFactory.getLog(EnquiryController.class);
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	private final CommandBus commandBus;
 
@@ -45,7 +45,7 @@ public class EnquiryController
 	{
 		String enquiryId = MD5Helper.hash(email);
 
-		LOGGER.info(enquiryId + " accepting free token");
+		LOGGER.info("{} accepting free token", enquiryId);
 
 		AcceptFreeTokenCommand acceptFreeTokenCommand = new AcceptFreeTokenCommand(enquiryId, email);
 
@@ -67,6 +67,8 @@ public class EnquiryController
 
 		if (enquiryRepository.existsById(enquiryId))
 		{
+			LOGGER.info("{} is already registered", email);
+
 			ApiError apiError = new ApiError("email", "Address already registered");
 			ResponseEntity<Object> body = ResponseEntity.badRequest().body(Collections.singleton(apiError));
 			handlerResult.setResult(body);
@@ -93,7 +95,7 @@ public class EnquiryController
 			public void onSuccess(CommandMessage<?> commandMessage, Object result)
 			{
 				handlerResult.setResult(ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).header(HttpHeaders.LOCATION, "/token-claim-ok").build());
-				LOGGER.info( "Successfully claimed token for " + enquiryId);
+				LOGGER.info( "Successfully claimed token for {}", enquiryId);
 			}
 
 			@Override
@@ -113,14 +115,14 @@ public class EnquiryController
 			public void onSuccess(CommandMessage<?> commandMessage, Object result)
 			{
 				handlerResult.setResult(ResponseEntity.ok().build());
-				LOGGER.info("Registered enquiry for: " + enquiryId);
+				LOGGER.info("Registered enquiry for: {}", enquiryId);
 			}
 
 			@Override
 			public void onFailure(CommandMessage<?> commandMessage, Throwable cause)
 			{
 				handlerResult.setErrorResult(ResponseEntity.badRequest().body(cause.getMessage()));
-				LOGGER.error("Failed to register enquiry", cause);
+				LOGGER.error("Failed to register enquiry: " + enquiryId, cause);
 			}
 		};
 	}

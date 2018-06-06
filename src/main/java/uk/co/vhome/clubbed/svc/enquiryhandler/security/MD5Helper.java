@@ -1,14 +1,14 @@
 package uk.co.vhome.clubbed.svc.enquiryhandler.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5Helper
 {
-	private static final Log LOGGER = LogFactory.getLog(MD5Helper.class);
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	public static String hash(String data)
 	{
