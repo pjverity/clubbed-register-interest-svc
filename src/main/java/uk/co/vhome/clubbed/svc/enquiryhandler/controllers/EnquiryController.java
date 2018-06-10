@@ -40,8 +40,18 @@ public class EnquiryController
 		this.enquiryRepository = enquiryRepository;
 	}
 
+	/*
+	 * TODO - This request is generally made from a link in an e-mail, so POSTing might not work.
+	 * To smoke test this, call the POST version instead to supply the smokeTest argument
+	 */
 	@GetMapping(path = "/token-claim/emails/{email}")
-	public DeferredResult<ResponseEntity<String>> tokenClaim(@PathVariable @Valid @NotBlank @Email String email,
+	public DeferredResult<ResponseEntity<String>> tokenClaim(@PathVariable @Valid @NotBlank @Email String email)
+	{
+		return postTokenClaim(email, false);
+	}
+
+	@PostMapping(path = "/token-claim/emails/{email}")
+	public DeferredResult<ResponseEntity<String>> postTokenClaim(@PathVariable @Valid @NotBlank @Email String email,
 	                                                         @RequestParam(defaultValue = "false") boolean smokeTest)
 	{
 		String enquiryId = MD5Helper.hash(email);
