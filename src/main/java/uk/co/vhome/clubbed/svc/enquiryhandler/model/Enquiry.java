@@ -3,6 +3,7 @@ package uk.co.vhome.clubbed.svc.enquiryhandler.model;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventhandling.Timestamp;
 import org.axonframework.eventsourcing.EventSourcingHandler;
+import org.axonframework.messaging.MetaData;
 import org.axonframework.spring.stereotype.Aggregate;
 import uk.co.vhome.clubbed.svc.enquiryhandler.security.MD5Helper;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.AcceptFreeTokenCommand;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import java.time.Instant;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
+import static uk.co.vhome.clubbed.svc.common.events.MetaDataKey.SMOKE_TEST;
 
 /**
  * Aggregate root that represents a visitor making an enquiry on the site
@@ -39,10 +41,13 @@ public class Enquiry
 	@CommandHandler
 	Enquiry(NewClubEnquiryCommand newClubEnquiryCommand)
 	{
+		MetaData metaData = MetaData.with(SMOKE_TEST.name(), newClubEnquiryCommand.isSmokeTest());
+
 		apply(new ClubEnquiryCreatedEvent(newClubEnquiryCommand.getEmailAddress(),
 		                                  newClubEnquiryCommand.getFirstName(),
 		                                  newClubEnquiryCommand.getLastName(),
-		                                  newClubEnquiryCommand.getPhoneNumber()));
+		                                  newClubEnquiryCommand.getPhoneNumber()),
+		      metaData);
 	}
 
 	@CommandHandler
@@ -50,7 +55,9 @@ public class Enquiry
 	{
 		if ( !isTokenAccepted() )
 		{
-			apply(new FreeTokenAcceptedEvent(acceptFreeTokenCommand.getEmailAddress()));
+			MetaData metaData = MetaData.with(SMOKE_TEST.name(), acceptFreeTokenCommand.isSmokeTest());
+
+			apply(new FreeTokenAcceptedEvent(acceptFreeTokenCommand.getEmailAddress()), metaData);
 		}
 	}
 

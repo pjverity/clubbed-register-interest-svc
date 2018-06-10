@@ -43,7 +43,7 @@ class EnquiryHandlerApplicationTests
 		NewClubEnquiryCommand newClubEnquiryCommand = new NewClubEnquiryCommand("amy.user@home.co.uk",
 		                                                                        "Amy",
 		                                                                        "User",
-		                                                                        "+44 (0)207 555 1234");
+		                                                                        "+44 (0)207 555 1234", false);
 
 		verify(mockCommandBus).dispatch(argThat(cmdMsg -> cmdMsg.getPayload().equals(newClubEnquiryCommand)), any());
 	}

@@ -22,7 +22,7 @@ class EnquiryTest
 	void createsNew()
 	{
 		testFixture.givenNoPriorActivity()
-				.when(new NewClubEnquiryCommand("a.runner@home.com", "Amy", "Runner", "+44 (0)207 555 1234"))
+				.when(new NewClubEnquiryCommand("a.runner@home.com", "Amy", "Runner", "+44 (0)207 555 1234", false))
 				.expectEventsMatching(
 						exactSequenceOf(
 								messageWithPayload(equalTo(new ClubEnquiryCreatedEvent("a.runner@home.com", "Amy", "Runner", "+44 (0)207 555 1234"))),

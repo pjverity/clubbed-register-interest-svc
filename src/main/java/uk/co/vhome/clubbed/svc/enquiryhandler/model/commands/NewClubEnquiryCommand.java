@@ -20,12 +20,15 @@ public class NewClubEnquiryCommand
 
 	private final String phoneNumber;
 
-	public NewClubEnquiryCommand(String emailAddress, String firstName, String lastName, String phoneNumber)
+	private final boolean smokeTest;
+
+	public NewClubEnquiryCommand(String emailAddress, String firstName, String lastName, String phoneNumber, boolean smokeTest)
 	{
 		this.emailAddress = emailAddress;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;
+		this.smokeTest = smokeTest;
 	}
 
 	public String getEmailAddress()
@@ -45,6 +48,11 @@ public class NewClubEnquiryCommand
 
 	public String getPhoneNumber() {
 		return phoneNumber;
+	}
+
+	public boolean isSmokeTest()
+	{
+		return smokeTest;
 	}
 
 	@Override

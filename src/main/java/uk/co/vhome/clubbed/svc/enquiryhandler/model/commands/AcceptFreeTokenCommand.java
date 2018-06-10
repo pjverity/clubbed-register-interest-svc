@@ -12,10 +12,13 @@ public class AcceptFreeTokenCommand
 
 	private final String emailAddress;
 
-	public AcceptFreeTokenCommand(String enquiryId, String emailAddress)
+	private final boolean smokeTest;
+
+	public AcceptFreeTokenCommand(String enquiryId, String emailAddress, boolean smokeTest)
 	{
 		this.enquiryId = enquiryId;
 		this.emailAddress = emailAddress;
+		this.smokeTest = smokeTest;
 	}
 
 	public String getEnquiryId()
@@ -26,5 +29,10 @@ public class AcceptFreeTokenCommand
 	public String getEmailAddress()
 	{
 		return emailAddress;
+	}
+
+	public boolean isSmokeTest()
+	{
+		return smokeTest;
 	}
 }

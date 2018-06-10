@@ -11,7 +11,7 @@
 
 	<groupId>uk.co.vhome.clubbed</groupId>
 	<artifactId>enquiry-handler</artifactId>
-	<version>5.0.2-SNAPSHOT</version>
+	<version>5.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Enquiry Handler</name>
@@ -32,7 +32,7 @@
 		<maven.compiler.target>10</maven.compiler.target>
 		<java.version>10</java.version>
 
-		<axon.version>3.0.7</axon.version>
+		<axon.version>3.2</axon.version>
 		<junit-jupiter.version>5.2.0</junit-jupiter.version>
 	</properties>
 
@@ -71,7 +71,7 @@
 		<!-- Event sourcing and distribution -->
 		<dependency>
 			<groupId>org.axonframework</groupId>
-			<artifactId>axon-spring-boot-autoconfigure</artifactId>
+			<artifactId>axon-spring-boot-starter</artifactId>
 			<version>${axon.version}</version>
 		</dependency>
 

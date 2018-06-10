@@ -11,7 +11,7 @@ public class ClubEnquiryCreatedEvent extends EnquiryEvent
 
 	private final String lastName;
 
-	private String phoneNumber;
+	private final String phoneNumber;
 
 	public ClubEnquiryCreatedEvent(String emailAddress, String firstName, String lastName, String phoneNumber)
 	{
@@ -42,11 +42,6 @@ public class ClubEnquiryCreatedEvent extends EnquiryEvent
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(String phoneNumber)
-	{
-		this.phoneNumber = phoneNumber;
-	}
-
 	@Override
 	public boolean equals(Object o)
 	{
@@ -74,6 +69,7 @@ public class ClubEnquiryCreatedEvent extends EnquiryEvent
 				       .add("emailAddress = " + getEmailAddress())
 				       .add("firstName = " + firstName)
 				       .add("lastName = " + lastName)
+					   .add("phoneNumber = " + phoneNumber)
 				       .toString();
 	}
 

@@ -11,10 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
-import uk.co.vhome.clubbed.svc.enquiryhandler.security.MD5Helper;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.AcceptFreeTokenCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.model.commands.NewClubEnquiryCommand;
 import uk.co.vhome.clubbed.svc.enquiryhandler.repositories.NonAxonEntityRepository;
+import uk.co.vhome.clubbed.svc.enquiryhandler.security.MD5Helper;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -41,13 +41,14 @@ public class EnquiryController
 	}
 
 	@GetMapping(path = "/token-claim/emails/{email}")
-	public DeferredResult<ResponseEntity<String>> tokenClaim(@PathVariable @Valid @NotBlank @Email String email)
+	public DeferredResult<ResponseEntity<String>> tokenClaim(@PathVariable @Valid @NotBlank @Email String email,
+	                                                         @RequestParam(defaultValue = "false") boolean smokeTest)
 	{
 		String enquiryId = MD5Helper.hash(email);
 
 		LOGGER.info("{} accepting free token", enquiryId);
 
-		AcceptFreeTokenCommand acceptFreeTokenCommand = new AcceptFreeTokenCommand(enquiryId, email);
+		AcceptFreeTokenCommand acceptFreeTokenCommand = new AcceptFreeTokenCommand(enquiryId, email, smokeTest);
 
 		DeferredResult<ResponseEntity<String>> handlerResult = new DeferredResult<>();
 
@@ -58,7 +59,8 @@ public class EnquiryController
 
 	@PostMapping(path = "/club-enquiry/emails/{email}")
 	public DeferredResult<ResponseEntity<Object>> register(@PathVariable @Valid @NotBlank @Email String email,
-	                                                       @Valid UserDetail userInfo)
+	                                                       @Valid UserDetail userDetail,
+	                                                       @RequestParam(defaultValue = "false") boolean smokeTest)
 	{
 
 		DeferredResult<ResponseEntity<Object>> handlerResult = new DeferredResult<>();
@@ -75,12 +77,13 @@ public class EnquiryController
 			return handlerResult;
 		}
 
-		String phoneNumberOrNull = userInfo.getPhone().isEmpty() ? null : userInfo.getPhone();
+		String phoneNumberOrNull = userDetail.getPhone().isEmpty() ? null : userDetail.getPhone();
 
 		NewClubEnquiryCommand newClubEnquiryCommand = new NewClubEnquiryCommand(email,
-		                                                                        userInfo.getFirstName(),
-		                                                                        userInfo.getLastName(),
-		                                                                        phoneNumberOrNull);
+		                                                                        userDetail.getFirstName(),
+		                                                                        userDetail.getLastName(),
+		                                                                        phoneNumberOrNull,
+		                                                                        smokeTest);
 
 		commandBus.dispatch(asCommandMessage(newClubEnquiryCommand), newEnquiryCommandCallback(enquiryId, handlerResult));
 
