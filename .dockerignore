@@ -1,6 +1,5 @@
 .gitignore
 *.iml
-mvnw
 pom.xml
 
 .idea
