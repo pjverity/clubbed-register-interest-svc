@@ -135,6 +135,27 @@
 			</plugin>
 
 			<plugin>
+				<groupId>com.amashchenko.maven.plugin</groupId>
+				<artifactId>gitflow-maven-plugin</artifactId>
+				<version>1.10.0</version>
+				<configuration>
+					<commitMessages>
+						<featureStartMessage>[gitflow-maven-plugin] Updated feature branch to version @{version}</featureStartMessage>
+						<featureFinishMessage>[gitflow-maven-plugin] Reset develop branch to version @{version}</featureFinishMessage>
+
+						<releaseStartMessage>[gitflow-maven-plugin] Updated release branch to version @{version}</releaseStartMessage>
+						<releaseFinishMessage>[gitflow-maven-plugin] Incremented develop branch to version @{version}</releaseFinishMessage>
+
+						<hotfixStartMessage>[gitflow-maven-plugin] Updated hotfix branch to version @{version}</hotfixStartMessage>
+						<hotfixFinishMessage>[gitflow-maven-plugin] Incremented master branch to version @{version}</hotfixFinishMessage>
+					</commitMessages>
+
+					<!-- Increment the minor version on develop after releases -->
+					<versionDigitToIncrement>1</versionDigitToIncrement>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
 				<version>1.3.7</version>
@@ -246,12 +267,6 @@
 				<configuration>
 					<skip>true</skip>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.3</version>
 			</plugin>
 
 			<plugin>
