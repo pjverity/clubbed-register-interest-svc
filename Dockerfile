@@ -1,8 +1,9 @@
 FROM openjdk:11-jre-slim-sid
 
-ARG ARTIFACT_VERSION
+ARG artifactId
+ARG version
 
-ENV ARTIFACT enquiry-handler-${ARTIFACT_VERSION}.jar
+ENV ARTIFACT ${artifactId}-${version}.jar
 
 EXPOSE 8080
 
