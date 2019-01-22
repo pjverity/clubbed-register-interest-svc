@@ -1,7 +1,10 @@
 FROM openjdk:11-jre-slim-sid
 
-ARG artifactId
-ARG version
+COPY /target/maven-archiver/pom.properties /pom.properties
+RUN . /pom.properties
+
+ARG artifactId=${artifactId}
+ARG version=${version}
 
 ENV ARTIFACT ${artifactId}-${version}.jar
 
