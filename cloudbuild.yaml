@@ -11,7 +11,7 @@ steps:
       - 'image'
       - 'deployment'
       - '-l'
-      - 'app=enquiry-handler'
+      - 'app=enquiry-handler,instance=reigatejuniorjoggers'
       - '*=gcr.io/${PROJECT_ID}/enquiry-handler:${TAG_NAME}'
     env:
       - 'CLOUDSDK_COMPUTE_ZONE=${_COMPUTE_ZONE}'
