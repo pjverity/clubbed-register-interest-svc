@@ -11,7 +11,7 @@
 
 	<groupId>uk.co.vhome.clubbed</groupId>
 	<artifactId>enquiry-handler</artifactId>
-	<version>5.2.0</version>
+	<version>5.3.0</version>
 
 	<url>https://github.com/pjverity/${project.artifactId}/wiki</url>
 
@@ -134,7 +134,7 @@
 			<plugin>
 				<groupId>com.amashchenko.maven.plugin</groupId>
 				<artifactId>gitflow-maven-plugin</artifactId>
-				<version>1.11.0</version>
+				<version>1.12.0</version>
 				<configuration>
 					<commitMessages>
 						<featureStartMessage>[gitflow-maven-plugin] Updated feature branch to version @{version}</featureStartMessage>
